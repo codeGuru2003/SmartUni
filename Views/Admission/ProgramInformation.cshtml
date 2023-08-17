@@ -26,7 +26,7 @@
 						<div class="col-md-4">
 							<div class="form-group">
 								<label asp-for="FirstName" class="form-label">Offering Type<span class="text-danger"> *</span></label>
-								<input asp-for=FirstName class="form-control" required />
+								@Html.DropDownList("OfferingTypeId", (SelectList)ViewBag.OfferingTypeId, "Select Offering Type", new { @class = "form-control" })
 							</div>
 						</div>
 						<div class="col-md-4">
