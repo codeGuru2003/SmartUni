@@ -126,6 +126,10 @@ namespace SmartUni.Models
 		public int? OfferingTypeID { get; set; }
 		[ForeignKey(nameof(OfferingTypeID))]
 		public virtual OfferingType? OfferingType { get; set; }
-
+		public int? DepartmentDegreeID { get; set; }
+		[ForeignKey(nameof(DepartmentDegreeID))]
+		public virtual DepartmentDegree? DepartmentDegree { get; set; }
+		public string? EntryYear { get; set; }
+		public string? Scholarship { get; set; }
 	}
 }

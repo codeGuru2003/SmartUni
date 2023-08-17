@@ -241,18 +241,7 @@ namespace SmartUni.Controllers
 		// GET: MultiStepForm/Step3
 		public IActionResult ProgramInformation()
 		{
-			var offeringTypes = _context.OfferingTypes.ToList();
-			var OfferingTypeList = new List<SelectListItem>
-			{
-				new SelectListItem { Value = null, Text = "---- Select Offering Type -----" }
-			};
-			OfferingTypeList.AddRange(offeringTypes.Select(x => new SelectListItem
-			{
-				Value = x.Id.ToString(),
-				Text = x.Name,
-			}));
-
-			ViewData["OfferingType"] = OfferingTypeList;	
+			ViewData["OfferingTypeId"] = _context.OfferingTypes.ToList();	
 			return View();
 		}
 
@@ -260,21 +249,10 @@ namespace SmartUni.Controllers
 		// POST: MultiStepForm/Step3
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public IActionResult ProgramInformation(MultiformDataViewModel formData)
+		public IActionResult ProgramInformation(EntranceApplicant model)
 		{
-			// Retrieve Step 1 and Step 2 data from TempData
-			var Biodata = TempData["Biodata"] as MultiformDataViewModel;
-			var EducationalBackground = TempData["Biodata"] as MultiformDataViewModel;
-
-			// Merge Step 1, Step 2, and Step 3 data
-			formData.FirstName = Biodata.FirstName;
-			formData.LastName = Biodata.LastName;
-			formData.DateofBirth = Biodata.DateofBirth;
-			//formData.University = step2Data.University;
-			//formData.Degree = step2Data.Degree;
-			//formData.GraduationYear = step2Data.GraduationYear;
-			TempData["Step3Data"] = formData;
-			return View("Summary", formData);
+			
+			return View();
 		}
 
 		[AdmissionFilter]
