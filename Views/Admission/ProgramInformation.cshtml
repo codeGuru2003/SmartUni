@@ -1,0 +1,65 @@
+﻿@model EntranceApplicant
+@{
+	Layout = "~/Views/Admission/_AdmissionLayout.cshtml";
+	ViewData["Title"] = "Program Information";
+}
+<div class="container">
+	<div class="card">
+		@if (TempData["RecordSavedMessage"] != null)
+		{
+			<script>
+				alert('@TempData["RecordSavedMessage"]');
+				@{
+					TempData.Remove("RecordSavedMessage");
+				}
+			</script>
+		}
+		<div class="card-header">
+			<p>PROGRAMME INFROMATION</p>
+			<p><span class="text-danger"><b>NOTE</b></span>: ALL FIELDS MARK * ARE REQUIRED</p>
+		</div>
+		<div class="card-body">
+			<div class="form">
+				<form asp-action="Biodata" asp-controller="Admission">
+					<p style="color:darkblue"><b>ENTRY YEAR AND OFFERING TYPE</b></p><hr />
+					<div class="row">
+						<div class="col-md-4">
+							<div class="form-group">
+								<label asp-for="FirstName" class="form-label">Offering Type<span class="text-danger"> *</span></label>
+								<input asp-for=FirstName class="form-control" required />
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group">
+								<label asp-for="FirstName" class="form-label">Degree of Choice<span class="text-danger"> *</span></label>
+								<input asp-for=MiddleName class="form-control" required />
+							</div>
+						</div>
+						<div class="col-md-4">
+							<div class="form-group">
+								<label asp-for="FirstName" class="form-label">Entry Year<span class="text-danger"> *</span></label>
+								<input asp-for=LastName class="form-control" required />
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-4">
+							<div class="form-group">
+								<label asp-for="FirstName" class="form-label">State the scholarship you hold or expect to hold or how would you finance your study at the university<span class="text-danger"> *</span></label>
+								<input asp-for=FirstName class="form-control" required />
+							</div>
+						</div>
+						<div class="col-md-4">
+						</div>
+						<div class="col-md-4">
+						</div>
+					</div>
+					<br />
+					<a class="btn btn-danger text-light" asp-action="Biodata">Previous</a>
+					<button class="btn btn-success">Save and Continue</button>
+				</form>
+			</div>
+		</div>
+	</div>
+	<br />
+</div>

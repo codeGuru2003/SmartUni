@@ -1,0 +1,63 @@
+﻿@model SmartUni.Models.Token
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h4>Details (Token)</h4>
+        </div>
+        <div class="card-body text-light" style="background:darkblue;">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label>Token</label>
+                        <input asp-for="Value" class="form-control" readonly />
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label>Reference No.</label>
+                        <input asp-for="ReferenceNo" class="form-control" readonly />
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label>Has Entered</label>
+                        <input asp-for="HasEntered" class="form-control" disabled />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label>Date Entered</label>
+                        <input asp-for="DateEntered" class="form-control" readonly />
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group">
+                        <label>Expiration Date</label>
+                        <input asp-for="ExpirationDate" class="form-control" readonly />
+                    </div>
+                </div>
+            </div>
+            @if (User.IsInRole("SuperAdmin"))
+            {
+                <div>
+                    <a class="btn btn-warning" asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+                    <a class="btn btn-primary" asp-action="Index">Back to List</a>
+                </div>
+            }
+            else
+            {
+                <div>
+                    <a class="btn btn-primary" asp-action="Index">Back to List</a>
+                </div>
+            }
+        </div>
+    </div>
+</div>

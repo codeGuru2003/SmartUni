@@ -1,0 +1,88 @@
+﻿@model IEnumerable<SmartUni.Models.AcademicYearType>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    int count = 1;
+}
+<div class="container">
+    <p>
+        @await Html.PartialAsync("~/Views/AcademicYearTypes/Create.cshtml", new AcademicYearType())
+    </p>
+    <div class="card">
+        <div class="card-header">
+            Academic Year Types
+        </div>
+        <div class="card-body text-light" style="background:darkblue;">
+            <div class="table-responsive">
+                <table class="table nowrap text-light" id="dataTable">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Name)
+                            </th>
+                            @if (User.IsInRole("SuperAdmin"))
+                            {
+                                <th>
+                                    Created By
+                                </th>
+                                <th>
+                                    Created On
+                                </th>
+                                <th>
+                                    Modified By
+                                </th>
+                                <th>
+                                    Modified On
+                                </th>
+                            }
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@count</td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Name)
+                                </td>
+                                @if (User.IsInRole("SuperAdmin"))
+                                {
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.CreatedBy)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.CreatedOn)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ModifiedBy)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.ModifiedOn)
+                                    </td>
+                                    <td>
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Edit</a> |
+                                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Details</a> |
+                                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                                    </td>
+                                }
+                                else
+                                {
+                                    <td>
+                                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Details</a>
+                                    </td>
+                                }
+                                
+                            </tr>
+                            count++;
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+<br />

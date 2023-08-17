@@ -1,0 +1,56 @@
+﻿@model IEnumerable<RefereeViewModel>
+@{
+	Layout = "~/Views/Admission/_AdmissionLayout.cshtml";
+	ViewData["Title"] = "References";
+}
+<div class="container">
+	<div class="card">
+		<div class="card-header">
+			<p>LIST OF REFERENCES</p>
+		</div>
+		<div class="card-body">
+			@await Html.PartialAsync("~/Views/EntranceApplicantReference/Create.cshtml", new EntranceApplicantReference())
+			<br />
+			<div class="table-responsive">
+				<table class="table" id="dataTable">
+					<thead>
+						<tr>
+							<th>REFEREE NAME</th>
+							<th>INSTITUTION</th>
+							<th>POSITION</th>
+							<th>EMAIL</th>
+							<th>STATUS</th>
+							<th>ACTION</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Test</td>
+							<td>Church</td>
+							<td>Pastor</td>
+							<td>pastor@test.com</td>
+							<td>Accepted</td>
+							<td>Accepted</td>
+						</tr>
+						@*@foreach (var item in Model)
+						{
+							<tr>
+								<td>@item.Name</td>
+								<td>@item.Institution</td>
+								<td>@item.Position</td>
+								<td>@item.Email</td>
+								<td>@item.Status_Id</td>
+								<td>
+
+								</td>
+							</tr>
+						}*@
+					</tbody>
+				</table>
+			</div>
+			<a class="btn btn-danger text-light" asp-action="ProgramInformation">Previous</a> | 
+			<a class="btn btn-primary text-light" asp-action="SupportingDocument">Next</a>
+		</div>
+	</div>
+	<br />
+</div>

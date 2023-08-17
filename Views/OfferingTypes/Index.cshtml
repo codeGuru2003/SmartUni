@@ -1,0 +1,52 @@
+﻿@model IEnumerable<OfferingType>
+@{
+    ViewData["Title"] = "Index";
+    var number = 1;
+}
+<div class="container">
+    @if (TempData["RecordSavedMessage"] != null)
+    {
+        <script>
+            alert('@TempData["RecordSavedMessage"]');
+            @{
+                TempData.Remove("RecordSavedMessage");
+            }
+        </script>
+    }
+    <p>
+        @await Html.PartialAsync("~/Views/OfferingTypes/Create.cshtml", new OfferingType())
+    </p>
+    <div class="card">
+        <div class="card-header">
+            Offering Type List
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table" id="dataTable">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Name</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@number</td>
+                                <td>@item.Name</td>
+                                <td>
+                                    <a>Edit</a> |
+                                    <a>Details</a>|
+                                    <a>Delete</a>
+                                </td>
+                            </tr>
+                            number++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
