@@ -21,7 +21,8 @@ namespace SmartUni.Controllers
 		}
 		public IActionResult Index()
         {
-            return View();
+			var userlist = _context.Users.ToList();
+            return View(userlist);
         }
 
         [HttpGet]

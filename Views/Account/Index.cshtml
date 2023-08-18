@@ -1,0 +1,36 @@
+﻿@model IEnumerable<ApplicationUser>
+@{
+    ViewData["Title"] = "Index";
+    int count = 1;
+}
+<div class="container">
+     <div class="card">
+         <div class="card-header">List of Users</div>
+         <div class="card-body">
+             <div class="table-responsive">
+                 <table class="table" id="dataTable">
+                     <thead>
+                         <tr>No</tr>
+                         <tr>Username</tr>
+                         <tr>Email</tr>
+                         <tr>Actions</tr>
+                     </thead>
+                     <tbody>
+                        @foreach(var user in Model)
+                        {
+                            <tr>
+                                <td>@count</td>
+                                <td>@user.UserName</td>
+                                <td>@user.Email</td>
+                                <td>
+
+                                </td>
+                            </tr>
+                            count++;
+                        }
+                    </tbody>
+                 </table>
+             </div>
+         </div>
+     </div>
+</div>
