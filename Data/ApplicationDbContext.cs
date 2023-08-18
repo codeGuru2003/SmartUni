@@ -69,7 +69,10 @@ namespace SmartUni.Data
         public DbSet<CurrencyType> CurrencyTypes { get; set; }
         public DbSet<DeleteLogs> DeleteLogs { get; set; }
         public DbSet<Department> Departments { get; set; }
+        public DbSet<FacultyType> FacultyTypes { get; set; }
+        public DbSet<Faculty> Faculties { get; set; }
         public DbSet<DepartmentBillingItem> DepartmentBilingItems { get; set; }
+        public DbSet<DepartmentType> DepartmentTypes { get; set; }
         public DbSet<DepartmentDegree> DepartmentDegrees { get; set; }
         public DbSet<DepartmentLevel> DepartmentLevels { get; set; }
         public DbSet<DepartmentMajor> DepartmentMajors { get; set; }

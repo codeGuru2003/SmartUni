@@ -8,6 +8,9 @@ namespace SmartUni.Models
 	{
 		[Key]
 		public int Id { get; set; }
+		public int DepartmentTypeID { get; set; }
+		[ForeignKey(nameof(DepartmentTypeID))]
+		public virtual DepartmentType? DepartmentType { get; set; }
 		public int CollegeID { get; set; }
 		[ForeignKey(nameof(CollegeID))]
 		public virtual College?	College { get; set; }
