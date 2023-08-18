@@ -2,10 +2,37 @@
 	Layout = "~/Views/Admission/_AdmissionLayout.cshtml";
 	ViewData["Title"] = "Upload Passportsize Photo";
 }
+<style>
+	img {
+		max-width: 250px;
+		max-height: 250px;
+		min-width: 250px;
+		min-height: 250px;
+	}
+
+	input[type="file"] {
+		margin-top: 5px;
+	}
+
+	.heading {
+		font-family: Montserrat;
+		font-size: 45px;
+		color: green;
+	}
+</style>
 <div class="container">
 	<div class="row">
-		<div class="col-4"></div>
-		<div class="col-md-4 col-sm-12"><br /><br />
+		<div class="col-md-4 col-sm-12">
+			<div class="container"><br /><br />
+				<div class="card">
+					<div class="card-header">PHOTO PREVIEW</div>
+					<div class="card-body">
+						<img id="imgPreview" class="card-img" src="#" alt="Image Preview" />
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-8 col-sm-12"><br /><br />
 			<div class="card">
 				<div class="card-header">
 					<p>UPLOAD PASSPORTSIZE PHOTO</p>
@@ -13,7 +40,7 @@
 				<div class="card-body">
 					<div></div>
 					<form asp-action="UploadPhoto" enctype="multipart/form-data">
-						<input type="file" class="form-control" /><br />
+						<input class="form-control" type="file" name="photograph" id="photo" required /><br />
 						<button class="btn btn-primary">Upload</button>
 					</form>
 				</div>
@@ -21,6 +48,21 @@
 			<br /><a class="btn btn-danger text-light" asp-action="SupportingDocument">Previous</a> |
 			<a class="btn btn-primary text-light" asp-action="Summary">Next</a>
 		</div>
-		<div class="col-4"></div>
 	</div>
 </div>
+<script type="text/javascript">
+	$(document).ready(() => {
+		$('#photo').change(function () {
+			const file = this.files[0];
+			console.log(file);
+			if (file) {
+				let reader = new FileReader();
+				reader.onload = function (event) {
+					console.log(event.target.result);
+					$('#imgPreview').attr('src', event.target.result);
+				}
+				reader.readAsDataURL(file);
+			}
+		});
+	});
+</script>

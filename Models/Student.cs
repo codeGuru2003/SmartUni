@@ -8,7 +8,11 @@ namespace SmartUni.Models
 		//Personal Information
 		[Key]
 		public int Id { get; set; }
-		public string StudentId { get; set; } = string.Empty;
+		public Int64 StudentId { get; set; }
+		public string? VoucherCode { get; set; }
+		public string? UserID { get; set; }
+		[ForeignKey(nameof(UserID))]
+		public virtual ApplicationUser? ApplicationUser { get; set; }
 
 		[Display(Name = "Status")]
 		public int StatusID { get; set; }
@@ -102,6 +106,34 @@ namespace SmartUni.Models
 		public int DisabilityTypeID { get; set; }
 		[ForeignKey(nameof(DisabilityTypeID))]
 		public virtual DisabilityType? DisabilityType { get; set; }
-		
-	}
+        //Secondary of High School Attended
+        [Display(Name = "County of High School Attended")]
+        public string? CountyOfHighSchoolAttended { get; set; }
+        [Display(Name = "High School Attended")]
+        public string? HighSchoolAttendedName { get; set; }
+        [Display(Name = "From")]
+        public DateTime? StartYear { get; set; }
+        [Display(Name = "To")]
+        public DateTime? EndYear { get; set; }
+
+        //First University Attended
+        [Display(Name = "University Name")]
+        public string? NameOfUniversity { get; set; }
+        public int? UniversityCountryID { get; set; }
+        [ForeignKey(nameof(UniversityCountryID))]
+        public virtual CountryType? UniversityCountryType { get; set; }
+        public DateTime? UniversityStartYear { get; set; }
+        public DateTime? UniversityEndYear { get; set; }
+
+        //Program Information
+        public int? OfferingTypeID { get; set; }
+        [ForeignKey(nameof(OfferingTypeID))]
+        public virtual OfferingType? OfferingType { get; set; }
+        public int? DepartmentDegreeID { get; set; }
+        [ForeignKey(nameof(DepartmentDegreeID))]
+        public virtual DepartmentDegree? DepartmentDegree { get; set; }
+        public string? EntryYear { get; set; }
+        public string? Scholarship { get; set; }
+
+    }
 }

@@ -21,7 +21,6 @@ namespace SmartUni.Controllers
 
         public IActionResult Index(string search)
         {
-
             if (string.IsNullOrEmpty(search))
             {
                 int ID = int.Parse(search);
@@ -32,16 +31,13 @@ namespace SmartUni.Controllers
                     return View(student);
                 }
             }
-            
             return View();
         }
 
         public IActionResult StudentPlannig(int id)
         {
             var semesterId = HttpContext.Session.GetInt32("A_AsemesterId");
-            var studentPlans = _context.StudentSections.Where(x => x.Id == id).Where(
-                x => x.AcademicSemesterId == semesterId).ToList();
-
+            var studentPlans = _context.StudentSections.Where(x => x.Id == id).Where(x => x.AcademicSemesterId == semesterId).ToList();
             return View(studentPlans);
         }
         [HttpGet]
