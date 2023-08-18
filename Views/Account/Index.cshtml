@@ -8,12 +8,14 @@
          <div class="card-header">List of Users</div>
          <div class="card-body">
              <div class="table-responsive">
-                 <table class="table" id="dataTable">
+                 <table class="table table" id="dataTable">
                      <thead>
-                         <tr>No</tr>
-                         <tr>Username</tr>
-                         <tr>Email</tr>
-                         <tr>Actions</tr>
+                         <tr>
+                             <th>No</th>
+                             <th>Username</th>
+                             <th>Email</th>
+                             <th>Actions</th>
+                         </tr>
                      </thead>
                      <tbody>
                         @foreach(var user in Model)
@@ -23,7 +25,8 @@
                                 <td>@user.UserName</td>
                                 <td>@user.Email</td>
                                 <td>
-
+                                    <a>Details</a>
+                                    <a>Delete</a>
                                 </td>
                             </tr>
                             count++;
