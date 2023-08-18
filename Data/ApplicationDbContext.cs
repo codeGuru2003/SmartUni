@@ -12,9 +12,9 @@ namespace SmartUni.Data
     {
         private ICurrentUserService _currentUserService;
 #pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, ICurrentUserService currentUserService)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options, ICurrentUserService currentUserService)
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-			: base(options)
+            : base(options)
         {
             _currentUserService = currentUserService;
         }
@@ -53,14 +53,23 @@ namespace SmartUni.Data
         }
         public DbSet<AcademicSemester> AcademicSemesters { get; set; }
         public DbSet<AcademicYearType> AcademicYearTypes { get; set; }
+        public DbSet<BankAccount> BankAccounts { get; set; }
         public DbSet<BillingType> BillingTypes { get; set; }
+        public DbSet<Bank> Banks { get; set; }
         public DbSet<College> College { get; set; }
         public DbSet<CollegeType> CollegeTypes { get; set; }
+        public DbSet<CoursePreRequisite> CoursePreRequisites { get; set; }
         public DbSet<CountryType> CountryTypes { get; set; }
+        public DbSet<Course> Courses { get; set; }
+        public DbSet<CourseCost> CourseCost { get; set; }
+        public DbSet<CourseCredit> CourseCredits { get; set; }
+        public DbSet<CourseBill> CourseBills { get; set; }
+        public DbSet<CourseBillingItem> CourseBillingItems { get; set; }
         public DbSet<CourseType> CourseTypes { get; set; }
         public DbSet<CurrencyType> CurrencyTypes { get; set; }
         public DbSet<DeleteLogs> DeleteLogs { get; set; }
         public DbSet<Department> Departments { get; set; }
+        public DbSet<DepartmentBillingItem> DepartmentBilingItems { get; set; }
         public DbSet<DepartmentDegree> DepartmentDegrees { get; set; }
         public DbSet<DepartmentLevel> DepartmentLevels { get; set; }
         public DbSet<DepartmentMajor> DepartmentMajors { get; set; }
@@ -85,11 +94,14 @@ namespace SmartUni.Data
         public DbSet<SemesterType> SemesterTypes { get; set; }
         public DbSet<StatusType> StatusTypes { get; set; }
         public DbSet<Student> Students { get; set; }
+        public DbSet<StudentBill> StudentBills { get; set; }
+        public DbSet<StudentAccount> StudentAccounts { get; set; }
         public DbSet<Test> Tests { get; set; }
         public DbSet<TestSchedule> TestSchedules { get; set; }
         public DbSet<TitleType> TitleTypes { get; set; }
 		public DbSet<Token> Tokens { get; set; }
         public DbSet<UserGroup> UserGroups { get; set; }
+        public DbSet<Harmonize> Harmonize { get; set; }
 
 		//Method to Update EntrantApplicant Educational Background Information
 		public async Task<bool> UpdateEducationBackgroundInformation
