@@ -99,9 +99,14 @@ namespace SmartUni.Data
         public DbSet<Test> Tests { get; set; }
         public DbSet<TestSchedule> TestSchedules { get; set; }
         public DbSet<TitleType> TitleTypes { get; set; }
-		public DbSet<Token> Tokens { get; set; }
+        public DbSet<Token> Tokens { get; set; }
         public DbSet<UserGroup> UserGroups { get; set; }
         public DbSet<Harmonize> Harmonize { get; set; }
+        public DbSet<Sections> Sections { get; set; }
+        public DbSet<StudentSections> StudentSections  { get; set; }
+        public DbSet<StudentMajorMinior> StudentMajorMinior { get; set; }
+
+
 
 		//Method to Update EntrantApplicant Educational Background Information
 		public async Task<bool> UpdateEducationBackgroundInformation
