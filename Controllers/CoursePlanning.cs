@@ -1,17 +1,21 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using SmartUni.Data;
 using SmartUni.Models;
+using System.Security.Claims;
 
 namespace SmartUni.Controllers
 {
     public class CoursePlanning : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public CoursePlanning(ApplicationDbContext context)
+        public CoursePlanning(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
 
@@ -43,7 +47,9 @@ namespace SmartUni.Controllers
         [HttpGet]
         public IActionResult CreateStudentSection()
         {
+
             ViewData["TitleTypeId"] = new SelectList(_context.TitleTypes, "Id", "Name");
+
             return View();
 
         }
@@ -53,6 +59,8 @@ namespace SmartUni.Controllers
         {
             if (ModelState.IsValid)
             {
+                var userID = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var student = await _context.Students.Where(x => x.Id == ).FirstOrDefault();
                 _context.StudentSections.Add(studentSection);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
