@@ -56,7 +56,7 @@ namespace SmartUni.Controllers
             if (ModelState.IsValid)
             {
                 var userID = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                var student = await _context.Students.Where(x => x.Id == ).FirstOrDefault();
+// var student = await _context.Students.Where(x => x.Id == ).FirstOrDefault();
                 _context.StudentSections.Add(studentSection);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
