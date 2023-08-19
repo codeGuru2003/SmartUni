@@ -20,12 +20,12 @@ namespace SmartUni.Controllers
         }
 
 
-        public IActionResult Index(string search)
+        public IActionResult Index(string? search)
         {
             if (string.IsNullOrEmpty(search))
             {
                 int ID = int.Parse(search);
-                var student = _context.Students.Where(x => x.Id == ID).FirstOrDefault();
+                var student = _context.Students.Where(x => x.StudentId == ID).FirstOrDefault();
 
                 if (student != null)
                 {
@@ -42,9 +42,15 @@ namespace SmartUni.Controllers
             return View(studentPlans);
         }
         [HttpGet]
-        public IActionResult CreateStudentSection()
+        public async Task<IActionResult> CreateStudentSection(int id)
         {
-            ViewData["TitleTypeId"] = new SelectList(_context.TitleTypes, "Id", "Name");
+
+            }
+            var semesterId = HttpContext.Session.GetInt32("A_AsemesterId");
+            var sections = await _context.Sections.Where(x => x.AcademicSemesterId == semesterId).ToListAsync();
+            ViewData["sections"] = new SelectList(sections, "Id", "Name");
+            ViewData["sections"] = new SelectList(sections, "Id", "Name");
+
             return View();
 
         }
@@ -55,7 +61,14 @@ namespace SmartUni.Controllers
             if (ModelState.IsValid)
             {
                 var userID = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                var student = await _context.Students.Where(x => x.Id ==studentSection.StudentId).FirstOrDefaultAsync();
+                var student = await _context.Students.Where(x => x.UserID == userID).FirstOrDefaultAsync();
+
+                if (student != null)
+                {
+
+                }
+
+
                 _context.StudentSections.Add(studentSection);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
