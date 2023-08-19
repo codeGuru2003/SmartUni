@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using SmartUni.Data;
 using SmartUni.Models;
 using SmartUni.ViewModels;
@@ -42,7 +43,9 @@ namespace SmartUni.Controllers
 
 				if (result.Succeeded)
 				{
-					return RedirectToAction("Index", "Home");
+                    var user = await _signInManager.UserManager.FindByNameAsync(model.Username);
+					var usergroup = await _context.UserGroups.Where(u => u.UserID.Equals(user.Id)).FirstOrDefaultAsync();
+                    return RedirectToAction("Index", "Home");
 				}
 				else
 				{
@@ -119,5 +122,15 @@ namespace SmartUni.Controllers
 		//	// Role removal failed
 		//	return RedirectToAction("Details", new { Id = userId });
 		//}
+		[HttpGet]
+		public async Task<IActionResult> Details(string id)
+		{
+			var user = await _userManager.FindByIdAsync(id);
+			return View(user);
+		}
+		public async Task<IActionResult> AddUserToGroup()
+		{
+			return View();
+		}
 	}
 }

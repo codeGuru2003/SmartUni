@@ -1,0 +1,18 @@
+﻿@model ApplicationUser
+@{
+    ViewData["Title"] = "Details";
+}
+<div class="container">
+    <div class="card">
+        <div class="card-header">Details</div>
+        <div class="card-body">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <img src="~/usersphoto/@Model.ImageUrl" alt="User Image" class="card-img" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

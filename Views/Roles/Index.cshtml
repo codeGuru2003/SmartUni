@@ -1,0 +1,47 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@model IEnumerable<IdentityRole>
+@{
+    ViewData["Title"] = "Roles";
+    int count = 1;
+}
+<div class="container">
+    <div class="card">
+        <div class="card-header">List of Roles</div>
+        <div class="card-body">
+            @if (TempData["Message"] != null)
+            {
+                <script>
+                    alert('@TempData["Message"]');
+                    @{
+                        TempData.Remove("Message");
+                    }
+                </script>
+            }
+            @await Html.PartialAsync("~/Views/Roles/Create.cshtml")<br /><br />
+            <div class="table-responsive">
+                <table class="table" id="dataTable">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Name</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach(var role in Model)
+                        {
+                            <tr>
+                                <td>@count</td>
+                                <td>@role.Name</td>
+                                <td>
+                                    <a>Details</a>
+                                </td>
+                            </tr>
+                            count++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

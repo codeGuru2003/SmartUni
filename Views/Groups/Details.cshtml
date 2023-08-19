@@ -1,0 +1,99 @@
+﻿@using Microsoft.AspNetCore.Identity;
+@using SmartUni.Data;
+@inject ApplicationDbContext _context;
+@model Group
+@{
+    ViewData["Title"] = "Details";
+    List<string> existingRoleIds = _context.GroupRoles
+        .Where(er => er.GroupID == Model.Id)
+        .Select(er => er.RoleID)
+        .ToList();
+
+    List<IdentityRole> availableRoles = _context.Roles
+        .Where(r => !existingRoleIds.Contains(r.Id))
+        .ToList();
+    var unavailableRoles = _context.GroupRoles.Where(x=>x.GroupID == Model.Id).Select(x=>x.IdentityRole).ToList();
+    int count = 1;
+    int count2 = 1;
+}
+<div class="container">
+    <div class="card">
+        <div class="card-header">Details</div>
+        <div class="card-boy">
+            <div class="container">
+                <h1>Group Name: @Model.Name</h1>
+            </div>
+        </div>
+    </div><br />
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">List of Unassigned (Group Roles)</div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table" id="dataTable">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Name</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach(var role in availableRoles){
+                                    <tr>
+                                        <td>@count</td>
+                                        <td>@role.Name</td>
+                                        <td>
+                                            <form asp-action="AddGroupRole" asp-controller="Groups">
+                                                <input type="hidden" name="groupId" value="@Model.Id" />
+                                                <input name="roleId" type="hidden" value="@role.Id"/>
+                                                <button class="btn btn-success">Add</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    count++;
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">List of Assigned (Group Roles)</div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table" id="dataTable">
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Name</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var role in unavailableRoles)
+                                {
+                                    <tr>
+                                        <td>@count2</td>
+                                        <td>@role.Name</td>
+                                        <td>
+                                            <form asp-action="RemoveGroupRole" asp-controller="Groups">
+                                                <input type="hidden" name="groupId" value="@Model.Id" />
+                                                <input name="roleId" type="hidden" value="@role.Id" />
+                                                <button class="btn btn-danger">Remove</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    count2++;
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

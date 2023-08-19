@@ -239,7 +239,7 @@ namespace SmartUni.Controllers
 
 		[AdmissionFilter]
 		// GET: MultiStepForm/Step3
-		public async Task<IActionResult> ProgramInformation()
+		public IActionResult ProgramInformation()
 		{
 			ViewData["OfferingTypeId"] = new SelectList(_context.OfferingTypes, "Id", "Name");
 			return View();
