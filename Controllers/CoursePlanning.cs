@@ -45,7 +45,6 @@ namespace SmartUni.Controllers
         public async Task<IActionResult> CreateStudentSection(int id)
         {
 
-            }
             var semesterId = HttpContext.Session.GetInt32("A_AsemesterId");
             var sections = await _context.Sections.Where(x => x.AcademicSemesterId == semesterId).ToListAsync();
             ViewData["sections"] = new SelectList(sections, "Id", "Name");

@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SmartUni.Models;
 using System.Diagnostics;
 
 namespace SmartUni.Controllers
 {
-	public class HomeController : Controller
+    [Authorize(Policy = "GroupPolicy")]
+    public class HomeController : Controller
 	{
 		private readonly ILogger<HomeController> _logger;
 
