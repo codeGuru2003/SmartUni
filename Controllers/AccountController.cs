@@ -6,6 +6,7 @@ using SmartUni.Data;
 using SmartUni.Models;
 using SmartUni.ViewModels;
 using System.Data;
+using System.Security.Claims;
 
 namespace SmartUni.Controllers
 {
@@ -44,8 +45,16 @@ namespace SmartUni.Controllers
 				if (result.Succeeded)
 				{
                     var user = await _signInManager.UserManager.FindByNameAsync(model.Username);
-					var usergroup = await _context.UserGroups.Where(u => u.UserID.Equals(user.Id)).FirstOrDefaultAsync();
-                    return RedirectToAction("Index", "Home");
+					var usergroup = await _context.UserGroups.Where(u => u.UserID.Equals(user.Id)).Include(x=>x.Group).FirstOrDefaultAsync();
+					if (usergroup.Group.Name.Contains("Super Admin"))
+					{
+                        var claims = new[]
+						{
+							new Claim("GroupId",$"{ usergroup.Group.Name }")
+						};
+                        await _signInManager.UserManager.AddClaimsAsync(user, claims);
+                        return RedirectToAction("Index", "Home");
+                    }
 				}
 				else
 				{
@@ -128,9 +137,23 @@ namespace SmartUni.Controllers
 			var user = await _userManager.FindByIdAsync(id);
 			return View(user);
 		}
-		public async Task<IActionResult> AddUserToGroup()
+		public async Task<IActionResult> AddUserToGroup(string UserID, int groupId)
 		{
-			return View();
-		}
+			if (UserID == null & groupId == null)
+			{
+				TempData["Message"] = "Could not process";
+				return RedirectToAction("Details", new { id = User });
+			}
+			var user = await _userManager.FindByIdAsync(UserID);
+			var usergroup = new UserGroup()
+			{
+				UserID = user.Id,
+				GroupID = groupId
+			};
+			_context.UserGroups.Add(usergroup);
+			await _context.SaveChangesAsync();
+            TempData["Message"] = "User added to group successfully";
+            return RedirectToAction("Details", new { id = User });
+        }
 	}
 }

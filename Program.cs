@@ -15,7 +15,10 @@ builder.Services.AddSingleton<ITempDataProvider, CustomTempDataProvider>();
 builder.Services.AddTransient<ICurrentUserService, CurrentUserService>();
 builder.Services.AddTransient<IRandomStringGenerator, RandomStringGenerator>();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(connectionString));
+    {
+        options.UseSqlServer(connectionString);
+        options.EnableSensitiveDataLogging();
+    });
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
@@ -37,6 +40,14 @@ builder.Services.ConfigureApplicationCookie(options =>
 builder.Services.AddControllersWithViews().AddNewtonsoftJson();
 builder.Services.AddRazorPages();
 builder.Services.AddSession();
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("GroupPolicy", policy =>
+    {
+        policy.RequireClaim("GroupId");
+    });
+});
 var app = builder.Build();
 using var scope = app.Services.CreateScope();
 var services = scope.ServiceProvider;
