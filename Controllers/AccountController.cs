@@ -140,10 +140,10 @@ namespace SmartUni.Controllers
 		}
 		public async Task<IActionResult> AddUserToGroup(string UserID, int groupId)
 		{
-			if (UserID == null & groupId == null)
+			if (UserID == null || groupId <= 0)
 			{
-				TempData["Message"] = "Could not process";
-				return RedirectToAction("Details", new { id = User });
+				TempData["Message"] = "Could not process User ID or group is null";
+				return RedirectToAction("Details", new { id = UserID });
 			}
 			var user = await _userManager.FindByIdAsync(UserID);
 			var usergroup = new UserGroup()
@@ -154,7 +154,7 @@ namespace SmartUni.Controllers
 			_context.UserGroups.Add(usergroup);
 			await _context.SaveChangesAsync();
             TempData["Message"] = "User added to group successfully";
-            return RedirectToAction("Details", new { id = User });
+            return RedirectToAction("Details", new { id = UserID });
         }
 		[HttpGet]
 		public IActionResult AccessDenied(string? returnurl)

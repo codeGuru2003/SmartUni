@@ -30,6 +30,15 @@
     <div class="card">
         <div class="card-header">Details</div>
         <div class="card-body">
+            @if (TempData["Message"] != null)
+            {
+                <script>
+                    alert('@TempData["Message"]');
+                    @{
+                        TempData.Remove("Message");
+                    }
+                </script>
+            }
             <div class="container">
                 <div class="row">
                     <div class="col-md-4">

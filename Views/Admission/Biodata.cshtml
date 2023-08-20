@@ -228,7 +228,12 @@
 </div>
 <script type="text/javascript">
 	function sayHello(){
-		alert('Hello');
+		var printDiv = document.getElementById("biodata");
+		var printWindow = window.open('', '', 'left=0, top=0, width=800, height=500, toolbar=0, scrollbars=0, status=0');
+		printWindow.document.write(printDiv.innerHTML);
+		printWindow.document.close();
+		printWindow.focus();
+		printWindow.print();
 	};
 </script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
