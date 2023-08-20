@@ -44,6 +44,7 @@ namespace SmartUni.Controllers
 
 				if (result.Succeeded)
 				{
+					var groups = await _context.UserGroups.ToListAsync();
                     var user = await _signInManager.UserManager.FindByNameAsync(model.Username);
 					var usergroup = await _context.UserGroups.Where(u => u.UserID.Equals(user.Id)).Include(x=>x.Group).FirstOrDefaultAsync();
 					if (usergroup.Group.Name.Contains("Super Admin"))
@@ -155,5 +156,10 @@ namespace SmartUni.Controllers
             TempData["Message"] = "User added to group successfully";
             return RedirectToAction("Details", new { id = User });
         }
+		[HttpGet]
+		public IActionResult AccessDenied(string? returnurl)
+		{
+			return View();
+		}
 	}
 }

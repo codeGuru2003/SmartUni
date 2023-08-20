@@ -1,11 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using SmartUni.Filters;
 using SmartUni.Models;
 using System.Diagnostics;
 
 namespace SmartUni.Controllers
 {
-    [Authorize(Policy = "GroupPolicy")]
+    [GroupAuthorizationFilter("Super Admin")]
     public class HomeController : Controller
 	{
 		private readonly ILogger<HomeController> _logger;

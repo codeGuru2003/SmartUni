@@ -4,7 +4,7 @@
 	ViewData["Title"] = "Bio Data";
 }
 <div class="container">
-	<div class="card">
+	<div class="card" id="biodata">
 		@if (TempData["LoginMessage"] != null)
 		{
 			<script>
@@ -17,6 +17,7 @@
 		<div class="card-header">
 			<p>BIODATA</p>
 			<p><span class="text-danger"><b>NOTE</b></span>: ALL FIELDS MARK * ARE REQUIRED</p>
+			<button class="btn btn-success" onclick="sayHello()">Download</button>
 		</div>
 		<div class="card-body">
 			<div class="form">
@@ -225,3 +226,9 @@
 	</div>
 	<br />
 </div>
+<script type="text/javascript">
+	function sayHello(){
+		alert('Hello');
+	};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>

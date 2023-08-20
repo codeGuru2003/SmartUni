@@ -5,7 +5,8 @@ namespace SmartUni.Filters
 {
 	public class AdmissionFilter : ActionFilterAttribute
 	{
-		public override void OnActionExecuting(ActionExecutingContext context)
+
+        public override void OnActionExecuting(ActionExecutingContext context)
 		{
 			var session = context.HttpContext.Session;
 
