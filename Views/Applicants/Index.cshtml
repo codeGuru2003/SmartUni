@@ -1,0 +1,49 @@
+﻿@model IEnumerable<SmartUni.Models.EntranceApplicant>
+@{
+    ViewData["Title"] = "Applicants";
+    var count = 1;
+}
+<div class="container">
+    <div class="card">
+        <div class="card-header">List of Applicants</div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table" id="dataTable">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Title</th>
+                            <th>First Name</th>
+                            <th>Middle Name</th>
+                            <th>Last Name</th>
+                            <th>Phone Number</th>
+                            <th>Applying for</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@count</td>
+                                <td>@item.TitleType.Name</td>
+                                <td>@item.FirstName</td>
+                                <td>@item.MiddleName</td>
+                                <td>@item.LastName</td>
+                                <td>@item.PhoneNumber</td>
+                                <td>@item.DepartmentDegree</td>
+                                <td>
+                                    <form>
+                                        <button>Approve</button>
+                                        <button>Decline</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            count++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
