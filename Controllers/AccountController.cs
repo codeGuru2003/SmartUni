@@ -47,6 +47,7 @@ namespace SmartUni.Controllers
 					var groups = await _context.UserGroups.ToListAsync();
                     var user = await _signInManager.UserManager.FindByNameAsync(model.Username);
 					var usergroup = await _context.UserGroups.Where(u => u.UserID.Equals(user.Id)).Include(x=>x.Group).FirstOrDefaultAsync();
+
 					if (usergroup.Group.Name.Contains("Super Admin"))
 					{
                         var claims = new[]
