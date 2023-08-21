@@ -120,6 +120,7 @@ namespace SmartUni.Controllers
 			{
 				switch (check)
 				{
+
 					case null:
 						TempData["RecordSavedMessage"] = "Applicant does not exist";
 						return RedirectToAction("EducationalBackground");
