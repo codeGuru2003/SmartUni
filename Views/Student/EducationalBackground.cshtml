@@ -1,0 +1,87 @@
+﻿@model Student
+@{
+	Layout = "~/Views/Admission/_AdmissionLayout.cshtml";
+	ViewData["Title"] = "Educational Background";
+}
+<div class="container">
+	<div class="card">
+		<div class="card-header">
+			@if (TempData["RecordSavedMessage"] != null)
+			{
+				<script>
+					alert('@TempData["RecordSavedMessage"]');
+					@{
+						TempData.Remove("RecordSavedMessage");
+					}
+				</script>
+			}
+			<p>EDUCATIONAL BACKGROUND</p>
+			<p><span class="text-danger"><b>NOTE</b></span>: ALL FIELDS MARK * ARE REQUIRED</p>
+		</div>
+		<div class="card-body">
+			<div class="form">
+				<form asp-action="EducationalBackground" asp-controller="Admission">
+					<p style="color:darkblue"><b>SECONDARY/HIGH SCHOOL ATTENDED</b></p><hr />
+					<input type="hidden" name="studentId1" value="@ViewBag.AddStudentId" />
+					<div class="row">
+						<div class="col-md-3">
+							<div class="form-group">
+								<label asp-for="CountyOfHighSchoolAttended" class="form-label">County of school Attended?<span class="text-danger"> *</span></label>
+								<input asp-for=CountyOfHighSchoolAttended class="form-control" required />
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label asp-for="HighSchoolAttendedName" class="form-label">Name of Secondary School<span class="text-danger"> *</span></label>
+								<input asp-for=HighSchoolAttendedName class="form-control" required />
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label asp-for="StartYear" class="form-label">From<span class="text-danger"> *</span></label>
+								<input type="date" asp-for="StartYear" class="form-control" required />
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label asp-for="EndYear" class="form-label">To<span class="text-danger"> *</span></label>
+								<input type="date" asp-for="EndYear" class="form-control" required />
+							</div>
+						</div>
+					</div>
+					<p style="color:darkblue"><b>FIRST UNIVERSITY ATTENDED</b></p><hr />
+					<div class="row">
+						<div class="col-md-3">
+							<div class="form-group">
+								<label asp-for="NameOfUniversity" class="form-label">Name of University ?</label>
+								<input asp-for="NameOfUniversity" class="form-control" />
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label asp-for="UniversityCountryID" class="form-label">Country ?</label>
+								<select asp-for="UniversityCountryID" asp-items="@ViewBag.CountryId" class="form-control"></select>
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label asp-for="UniversityStartYear" class="form-label">From Year ?</label>
+								<input type="date" asp-for="UniversityStartYear" class="form-control" />
+							</div>
+						</div>
+						<div class="col-md-3">
+							<div class="form-group">
+								<label asp-for="UniversityEndYear" class="form-label">To Year ?</label>
+								<input type="date" asp-for="UniversityEndYear" class="form-control" />
+							</div>
+						</div>
+					</div>
+					<br />
+					<a class="btn btn-danger text-light" asp-action="Biodata">Previous</a>
+					<button class="btn btn-success">Save and Continue</button>
+				</form>
+			</div>
+		</div>
+	</div>
+	<br />
+</div>
