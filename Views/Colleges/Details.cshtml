@@ -1,0 +1,81 @@
+﻿@model SmartUni.Models.College
+
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            <h4>Details (College)</h4>
+        </div>
+        <div class="card-body text-light" style="background:darkblue;">
+            <div class="container">
+                <dl class="row">
+                    <dt class="col-sm-6">
+                        @Html.DisplayNameFor(model => model.CollegeType)
+                    </dt>
+                    <dd class="col-sm-6">
+                        @Html.DisplayFor(model => model.CollegeType.Name)
+                    </dd>
+                    <dt class="col-sm-6">
+                        @Html.DisplayNameFor(model => model.Name)
+                    </dt>
+                    <dd class="col-sm-6">
+                        @Html.DisplayFor(model => model.Name)
+                    </dd>
+                    <dt class="col-sm-6">
+                        @Html.DisplayNameFor(model => model.ShortName)
+                    </dt>
+                    <dd class="col-sm-6">
+                        @Html.DisplayFor(model => model.ShortName)
+                    </dd>
+                </dl>
+            </div>
+            @if (User.IsInRole("SuperAdmin"))
+            {
+                <div>
+                    <a asp-action="Edit" class="btn btn-warning" asp-route-id="@Model?.Id">Edit</a> |
+                    <a asp-action="Index" class="btn btn-primary">Back to List</a>
+                </div>
+            }
+            else
+            {
+                <div>
+                    <a asp-action="Index" class="btn btn-primary">Back to List</a>
+                </div>
+            }
+        </div>
+    </div>
+    <br />
+    <button id="toggleButton" class="form-control btn text-light" style="background:darkblue;">Manage Departments</button>
+    <br />
+    <div class="card" id="hiddenDiv" style="display: none;">
+        <div class="card-header">
+            List of Departments
+        </div>
+        <div class="card-body text-light" style="background:darkblue;">
+            @await Html.PartialAsync("~/Views/Departments/Create.cshtml",new Department())
+            <br /><br />
+            <div class="table-responsive">
+                <table class="table text-light" id="dataTable">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Name</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $("#toggleButton").click(function () {
+            $("#hiddenDiv").toggle();
+        });
+    });
+</script>
+

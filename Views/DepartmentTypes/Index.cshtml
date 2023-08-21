@@ -1,0 +1,38 @@
+﻿@model IEnumerable<SmartUni.Models.DepartmentType>
+@{
+    ViewData["Title"] = "Department Types";
+    int count = 1;
+}
+<div class="container">
+    <div class="card">
+        <div class="card-header">List of Department Types</div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table" id="dataTable">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Name</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@count</td>
+                                <td>@item.Name</td>
+                                <td>
+                                    <a class="btn btn-warning" asp-action="Edit">Edit</a>
+                                    <a class="btn btn-primary" asp-action="Details">Details</a>
+                                    <a class="btn btn-danger" asp-action="Delete">Delete</a>
+                                </td>
+                            </tr>
+                            count++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

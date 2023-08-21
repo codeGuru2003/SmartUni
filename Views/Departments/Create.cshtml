@@ -1,0 +1,53 @@
+﻿@model Department
+@{
+    ViewData["Title"] = "Create";
+}
+<button class="btn btn-primary text-light"  href="#" data-toggle="modal" data-target="#department">Create</button>
+<div class="modal fade" id="department" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-dark" id="exampleModalLabel">Create Department</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body text-dark">
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="DepartmentTypeID" class="control-label"></label>
+                        <input asp-for="DepartmentTypeID" class="form-control" />
+                        <span asp-validation-for="DepartmentTypeID" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Name" class="control-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="CurrencyID" class="control-label"></label>
+                        <input asp-for="CurrencyID" class="form-control" />
+                        <span asp-validation-for="CurrencyID" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="PrerequisiteRequired" class="control-label"></label>
+                        <input asp-for="PrerequisiteRequired" class="form-control" />
+                        <span asp-validation-for="PrerequisiteRequired" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Name" class="control-label"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Create" class="btn btn-success" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
