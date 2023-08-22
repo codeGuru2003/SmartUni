@@ -5,7 +5,7 @@ using SmartUni.Filters;
 
 namespace SmartUni.Controllers
 {
-    [GroupAuthorizationFilter("Super Admin, Admission")]
+    [GroupAuthorizationFilter("Super Admin")]
     public class ApplicantsController : Controller
     {
         private readonly ApplicationDbContext _context;

@@ -7,11 +7,9 @@
 }
 
 <div class="container">
-    <p>
-        @await Html.PartialAsync("~/Views/Tokens/Create.cshtml", new Token())
-    </p>
+    <a class="btn text-light" style="background:darkblue;" asp-action="Create" asp-controller="Student">Create</a><br /><br />
     <div class="card">
-        <div class="card-header">Token List</div>
+        <div class="card-header">List of Students</div>
         <div class="card-body text-light" style="background:darkblue;">
             <div class="table-responsive">
                 <table class="table nowrap text-light" id="dataTable">

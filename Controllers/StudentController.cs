@@ -24,7 +24,23 @@ namespace SmartUni.Controllers
 			var students = await _context.Students.ToListAsync();
 			return View(students);
 		}
-
+		public IActionResult Create()
+		{
+            ViewData["TitleTypeId"] = new SelectList(_context.TitleTypes, "Id", "Name");
+            ViewData["GenderId"] = new SelectList(_context.Genders, "Id", "Name");
+            ViewData["NationalityId"] = new SelectList(_context.NationalityTypes, "Id", "Name");
+            ViewData["CountryId"] = new SelectList(_context.CountryTypes, "Id", "Name");
+            ViewData["ReligionId"] = new SelectList(_context.ReligionTypes, "Id", "Name");
+            ViewData["MaritalStatusId"] = new SelectList(_context.MaritalStatusTypes, "Id", "Name");
+            ViewData["OccupationId"] = new SelectList(_context.OccupationTypes, "Id", "Name");
+            ViewData["RelationshipId"] = new SelectList(_context.RelationshipTypes, "Id", "Name");
+            ViewData["DisabilityId"] = new SelectList(_context.DisabilityTypes, "Id", "Name");
+            return View();
+		}
+		public IActionResult Create(Student student)
+		{
+			return View();
+		}
 		[HttpGet]
 		public IActionResult Biodata()
 		{

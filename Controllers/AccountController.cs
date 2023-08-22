@@ -48,6 +48,7 @@ namespace SmartUni.Controllers
                     var user = await _signInManager.UserManager.FindByNameAsync(model.Username);
 					var usergroup = await _context.UserGroups.Where(u => u.UserID.Equals(user.Id)).Include(x=>x.Group).FirstOrDefaultAsync();
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
 					if (usergroup.Group.Name.Contains("Super Admin"))
 					{
                         var claims = new[]
@@ -57,6 +58,7 @@ namespace SmartUni.Controllers
                         await _signInManager.UserManager.AddClaimsAsync(user, claims);
                         return RedirectToAction("Index", "Home");
                     }
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
 				}
 				else
 				{
