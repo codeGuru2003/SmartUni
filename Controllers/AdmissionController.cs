@@ -12,7 +12,7 @@ using System.Data;
 
 namespace SmartUni.Controllers
 {
-	
+	//This controller is responsible for Entrance Application for applicants
 	public class AdmissionController : Controller
 	{
 		
@@ -48,7 +48,6 @@ namespace SmartUni.Controllers
 							case true:
 								HttpContext.Session.SetString("Token", token);
 								TempData["LoginMessage"] = "Login successful";
-								//HttpContext.Response.Cookies.Append("Token", token);
 								return RedirectToAction("Biodata");
 							case false:
 								check_token.HasEntered = true;
@@ -59,8 +58,6 @@ namespace SmartUni.Controllers
 								TempData["LoginMessage"] = "Login successful";
 								return RedirectToAction("Biodata", "Admission");
 							default:
-								// If the value of check_token.HasEntered is neither true nor false, handle the default case here.
-								// You may throw an exception or take some other appropriate action.
 								throw new InvalidOperationException("Invalid value for check_token.HasEntered.");
 						}
 				}
@@ -68,7 +65,7 @@ namespace SmartUni.Controllers
 
 			return View();
 		}
-
+		//This Method is the BioData Method
 		[AdmissionFilter]
 		[HttpGet]
         public async Task<IActionResult> Biodata()
@@ -109,6 +106,7 @@ namespace SmartUni.Controllers
 			return View();
 		}
 
+		//Bio Data Form Post Method
 		[AdmissionFilter]
 		[HttpPost]
 		[ValidateAntiForgeryToken]
@@ -157,6 +155,7 @@ namespace SmartUni.Controllers
             return View();
         }
 
+		//Educational Background Form GET Method
 		[AdmissionFilter]
 		// GET: MultiStepForm/Step2
 		public async Task<IActionResult> EducationalBackground()
@@ -183,6 +182,7 @@ namespace SmartUni.Controllers
 			return View();
 		}
 
+		//Educational Background Form POST Method 
 		// POST: MultiStepForm/Step2
 		[AdmissionFilter]
 		[HttpPost]
@@ -234,6 +234,7 @@ namespace SmartUni.Controllers
 			return RedirectToAction("EducationalBackground");
 		}
 
+		//Program Information Form GET Method
 		[AdmissionFilter]
 		// GET: MultiStepForm/Step3
 		public async Task<IActionResult> ProgramInformation()
@@ -251,6 +252,7 @@ namespace SmartUni.Controllers
 			return View();
 		}
 
+		//Program Information Form POST Method
 		[AdmissionFilter]
 		// POST: MultiStepForm/Step3
 		[HttpPost]
@@ -289,6 +291,7 @@ namespace SmartUni.Controllers
 			return View();
 		}
 
+		//Reference Form GET Method POST Method is in Entrance Applicant References Controller
 		[AdmissionFilter]
 		[HttpGet]
 		public async Task<IActionResult> References()
@@ -298,20 +301,7 @@ namespace SmartUni.Controllers
 			return View(check);
 		}
 
-		[AdmissionFilter]
-		// POST: MultiStepForm/Step3
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public async Task<IActionResult> References(EntranceApplicant applicant)
-		{
-			var session = HttpContext.Session.GetString("Token");
-			var check = await _context.EntranceApplicants.Where(x => x.StudentId.Contains(session)).FirstOrDefaultAsync();
-			if (ModelState.IsValid)
-			{
-
-			}
-			return View();
-		}
+		//Entrance Applicant Logout Method (Destroys Applicant Session)
 		public IActionResult Logout()
 		{
 			HttpContext.Session.Remove("Token");
@@ -344,6 +334,15 @@ namespace SmartUni.Controllers
         {
             return View();
         }
+
+		[AdmissionFilter]
+		[ValidateAntiForgeryToken]
+		[HttpPost]
+		public async Task<IActionResult> UploadPhoto(IFormFile file)
+		{
+
+			return View();
+		}
 
         [AdmissionFilter]
         [HttpGet]
