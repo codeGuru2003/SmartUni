@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SmartUni.Data;
+using SmartUni.Models;
 
 namespace SmartUni.Controllers
 {
@@ -21,15 +22,45 @@ namespace SmartUni.Controllers
         {
             return View();
         }
-
-        [HttpPost]
-        public IActionResult Create(DepartmentsController department)
+        [HttpGet]
+        public IActionResult Details(int Id)
         {
-            if (ModelState.IsValid)
+            var department = _context.Departments.Where(x=>x.Id == Id).FirstOrDefault();
+            if (department != null)
             {
-
+                return View(department);
             }
             return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(Department department)
+        {
+            if (department.IsFlatRate == false)
+            {
+                department.Money = null;
+                if (ModelState.IsValid)
+                {
+                    _context.Departments.Add(department);
+                    await _context.SaveChangesAsync();
+                    TempData["Message"] = "Record was created sucessfully";
+                    return RedirectToAction("Details", "Colleges", new { id = Convert.ToInt32(TempData["CollegeID"]) });
+                }
+                TempData["Message"] = "Error creating record";
+                return RedirectToAction("Details", "Colleges", new { id = Convert.ToInt32(TempData["CollegeID"]) });
+            }
+            else 
+            { 
+                if (ModelState.IsValid)
+                {
+                    _context.Departments.Add(department);
+                    await _context.SaveChangesAsync();
+                    TempData["Message"] = "Record was created sucessfully";
+                    return RedirectToAction("Details", "Colleges", new { id = Convert.ToInt32(TempData["CollegeID"]) });
+                }
+                TempData["Message"] = "Error creating record";
+                return RedirectToAction("Details", "Colleges", new { id = Convert.ToInt32(TempData["CollegeID"]) });
+            }
         }
     }
 }

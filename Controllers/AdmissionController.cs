@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -14,11 +15,13 @@ namespace SmartUni.Controllers
 	
 	public class AdmissionController : Controller
 	{
-
+		
 		private readonly ApplicationDbContext _context;
-        public AdmissionController(ApplicationDbContext context)
+		private readonly IWebHostEnvironment _webHostEnvironment;
+        public AdmissionController(ApplicationDbContext context, IWebHostEnvironment webHostEnvironment)
         {
 			_context = context;
+			_webHostEnvironment = webHostEnvironment;
         }
 		[HttpGet]
 		public IActionResult Apply()
@@ -211,14 +214,8 @@ namespace SmartUni.Controllers
 							TempData["RecordSavedMessage"] = "Record has been updated.";
 							return RedirectToAction("ProgramInformation");
 						}
-						check.CountyOfHighSchoolAttended = model.CountyOfHighSchoolAttended;
-						check.HighSchoolAttendedName = model.HighSchoolAttendedName;
-						check.StartYear = model.StartYear;
-						check.EndYear = model.EndYear;
-						_context.EntranceApplicants.Update(check);
-						await _context.SaveChangesAsync();
-						TempData["RecordSavedMessage"] = "Record has been updated.";
-						return RedirectToAction("ProgramInformation");
+						TempData["RecordSavedMessage"] = "Could not update record.";
+						return RedirectToAction("EducationalBackground");
 				}
 			}
 			var country = _context.CountryTypes.ToList();
@@ -239,8 +236,17 @@ namespace SmartUni.Controllers
 
 		[AdmissionFilter]
 		// GET: MultiStepForm/Step3
-		public IActionResult ProgramInformation()
+		public async Task<IActionResult> ProgramInformation()
 		{
+			var session = HttpContext.Session.GetString("Token");
+			var applicant = await _context.EntranceApplicants.Where(x => x.StudentId.Contains(session)).FirstOrDefaultAsync();
+			if (applicant != null)
+			{
+				ViewData["CollegeID"] = new SelectList(_context.College, "Id", "Name");
+				ViewData["OfferingTypeId"] = new SelectList(_context.OfferingTypes, "Id", "Name");
+				return View(applicant);
+			}
+			ViewData["CollegeID"] = new SelectList(_context.College,"Id","Name");
 			ViewData["OfferingTypeId"] = new SelectList(_context.OfferingTypes, "Id", "Name");
 			return View();
 		}
@@ -249,19 +255,63 @@ namespace SmartUni.Controllers
 		// POST: MultiStepForm/Step3
 		[HttpPost]
 		[ValidateAntiForgeryToken]
-		public IActionResult ProgramInformation(EntranceApplicant model)
+		public async Task<IActionResult> ProgramInformation(EntranceApplicant model, string DegreeId)
 		{
-			
+			var session = HttpContext.Session.GetString("Token");
+			var check = await _context.EntranceApplicants.Where(x => x.StudentId.Contains(session)).FirstOrDefaultAsync();
+			if (model != null)
+			{
+				switch (check)
+				{
+					case null:
+						TempData["RecordSavedMessage"] = "Applicant does not exist";
+						return RedirectToAction("EducationalBackground");
+					default:
+						if (model.OfferingTypeID != null && model.CollegeID != null && model.DepartmentID != null && DegreeId != null)
+						{
+							check.OfferingTypeID = model.OfferingTypeID;
+							check.CollegeID = model.CollegeID;
+							check.DepartmentID = model.DepartmentID;
+							check.DepartmentDegreeID = Convert.ToInt32(DegreeId);
+							check.Scholarship = model.Scholarship;
+							check.EntryYear = model.EntryYear;
+							_context.EntranceApplicants.Update(check);
+							await _context.SaveChangesAsync();
+							TempData["RecordSavedMessage"] = "Record has been updated.";
+							return RedirectToAction("References");
+						}
+						TempData["RecordSavedMessage"] = "Could not update record.";
+						return RedirectToAction("ProgramInformation");
+				}
+			}
+			ViewData["CollegeID"] = new SelectList(_context.College, "Id", "Name");
+			ViewData["OfferingTypeId"] = new SelectList(_context.OfferingTypes, "Id", "Name");
 			return View();
 		}
 
 		[AdmissionFilter]
 		[HttpGet]
-		public IActionResult References()
+		public async Task<IActionResult> References()
 		{
-			return View();
+			var session = HttpContext.Session.GetString("Token");
+			var check = await _context.EntranceApplicants.Where(x => x.StudentId.Contains(session)).FirstOrDefaultAsync();
+			return View(check);
 		}
 
+		[AdmissionFilter]
+		// POST: MultiStepForm/Step3
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> References(EntranceApplicant applicant)
+		{
+			var session = HttpContext.Session.GetString("Token");
+			var check = await _context.EntranceApplicants.Where(x => x.StudentId.Contains(session)).FirstOrDefaultAsync();
+			if (ModelState.IsValid)
+			{
+
+			}
+			return View();
+		}
 		public IActionResult Logout()
 		{
 			HttpContext.Session.Remove("Token");
@@ -281,9 +331,11 @@ namespace SmartUni.Controllers
 
 		[AdmissionFilter]
 		[HttpGet]
-		public IActionResult SupportingDocument()
+		public async Task<IActionResult> SupportingDocument()
 		{
-			return View();
+			var session = HttpContext.Session.GetString("Token");
+			var check = await _context.EntranceApplicants.Where(x => x.StudentId.Contains(session)).FirstOrDefaultAsync();
+			return View(check);
 		}
 
         [AdmissionFilter]
@@ -313,5 +365,68 @@ namespace SmartUni.Controllers
         {
             return View();
         }
-    }
+		public async Task<JsonResult> GetDepartments(int collegeId)
+		{
+			var departments = await _context.Departments
+				.Where(d=>d.CollegeID == collegeId)
+				.ToListAsync();
+			return Json(new SelectList(departments, "Id", "Name"));
+		}
+		public async Task<JsonResult> GetDegrees(int departmentId)
+		{
+			var degrees = await _context.DepartmentDegrees
+				.Where(d => d.DepartmentID == departmentId)
+				.ToListAsync();
+			return Json(new SelectList(degrees, "Id", "Name"));
+		}
+
+		[AdmissionFilter]
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> UploadDocument(IFormFile file, DocumentUploadViewModel model)
+		{
+
+			if (file == null || file.Length == 0)
+				return RedirectToAction("Index");
+
+			var uploadsPath = Path.Combine(_webHostEnvironment.WebRootPath, "uploads");
+			if (!Directory.Exists(uploadsPath))
+				Directory.CreateDirectory(uploadsPath);
+
+			var fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+			var filePath = Path.Combine(uploadsPath, fileName);
+
+			using (var fileStream = new FileStream(filePath, FileMode.Create))
+			{
+				await file.CopyToAsync(fileStream);
+			}
+			var entranceApplicantDocument = new EntranceApplicantDocument
+			{
+				EntranceApplicantId = model.EntranceApplicantId,
+				DocumentTypeId = model.DocumentTypeId,
+				FilePath = filePath,
+			};
+			_context.EntranceApplicantDocuments.Add(entranceApplicantDocument);
+			await _context.SaveChangesAsync();
+			return RedirectToAction("SupportingDocument");
+		}
+
+		[AdmissionFilter]
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> DeleteDocument(int id)
+		{
+			var pdfFile = await _context.EntranceApplicantDocuments.FindAsync(id);
+			if (pdfFile == null)
+				return NotFound();
+			if (System.IO.File.Exists(pdfFile.FilePath))
+			{
+				System.IO.File.Delete(pdfFile.FilePath);
+			}
+
+			_context.EntranceApplicantDocuments.Remove(pdfFile);
+			await _context.SaveChangesAsync();
+			return RedirectToAction("SupportingDocument");
+		}
+	}
 }

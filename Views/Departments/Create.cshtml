@@ -13,11 +13,12 @@
                 </button>
             </div>
             <div class="modal-body text-dark">
-                <form asp-action="Create">
+                <form asp-action="Create" asp-controller="Departments" method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input asp-for="CollegeID" type="hidden" />
                     <div class="form-group">
-                        <label asp-for="DepartmentTypeID" class="control-label"></label>
-                        <input asp-for="DepartmentTypeID" class="form-control" />
+                        <label asp-for="DepartmentTypeID" class="control-label">Department Type</label>
+                        @Html.DropDownList("DepartmentTypeID", (SelectList)ViewBag.DepartmentTypeId, "Select Department Type", new { @class = "form-control" })
                         <span asp-validation-for="DepartmentTypeID" class="text-danger"></span>
                     </div>
                     <div class="form-group">
@@ -26,19 +27,59 @@
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="CurrencyID" class="control-label"></label>
-                        <input asp-for="CurrencyID" class="form-control" />
+                        <label asp-for="CurrencyID" class="control-label">Currency</label>
+                        @Html.DropDownList("CurrencyID", (SelectList)ViewBag.CurrencyID, "Select Currency", new { @class = "form-control" })
                         <span asp-validation-for="CurrencyID" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="PrerequisiteRequired" class="control-label"></label>
-                        <input asp-for="PrerequisiteRequired" class="form-control" />
+                        <input asp-for="PrerequisiteRequired" />
                         <span asp-validation-for="PrerequisiteRequired" class="text-danger"></span>
                     </div>
                     <div class="form-group">
-                        <label asp-for="Name" class="control-label"></label>
-                        <input asp-for="Name" class="form-control" />
-                        <span asp-validation-for="Name" class="text-danger"></span>
+                        <label asp-for="ContactNumber" class="control-label"></label>
+                        <input asp-for="ContactNumber" class="form-control" />
+                        <span asp-validation-for="ContactNumber" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="EmailAddress" class="control-label"></label>
+                        <input asp-for="EmailAddress" class="form-control" />
+                        <span asp-validation-for="EmailAddress" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="FreshmanCredit" class="control-label"></label>
+                        <input asp-for="FreshmanCredit" class="form-control" />
+                        <span asp-validation-for="FreshmanCredit" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="GraduationCredits" class="control-label"></label>
+                        <input asp-for="GraduationCredits" class="form-control" />
+                        <span asp-validation-for="GraduationCredits" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Address" class="control-label"></label>
+                        <input asp-for="Address" class="form-control" />
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="MinPaymentDays" class="control-label"></label>
+                        <input asp-for="MinPaymentDays" class="form-control" />
+                        <span asp-validation-for="MinPaymentDays" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="MaxPaymentDays" class="control-label"></label>
+                        <input asp-for="MaxPaymentDays" class="form-control" />
+                        <span asp-validation-for="MaxPaymentDays" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="IsFlatRate" class="control-label"></label>
+                        <input asp-for="IsFlatRate"/>
+                        <span asp-validation-for="IsFlatRate" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Money" class="control-label"></label>
+                        <input asp-for="Money" class="form-control" />
+                        <span asp-validation-for="Money" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <input type="submit" value="Create" class="btn btn-success" />

@@ -1,7 +1,17 @@
-﻿@model IEnumerable<RefereeViewModel>
+﻿@inject ApplicationDbContext _context
+@model EntranceApplicant
 @{
 	Layout = "~/Views/Admission/_AdmissionLayout.cshtml";
 	ViewData["Title"] = "References";
+	var references = await _context.EntranceApplicantReferences
+	.Include(p => p.StatusType)
+	.Where(x => x.EntranceApplicantID == Model.Id)
+	.ToListAsync();
+
+	if (references == null)
+	{
+		references = new List<EntranceApplicantReference>();
+	}
 }
 <div class="container">
 	<div class="card">
@@ -9,7 +19,7 @@
 			<p>LIST OF REFERENCES</p>
 		</div>
 		<div class="card-body">
-			@await Html.PartialAsync("~/Views/EntranceApplicantReference/Create.cshtml", new EntranceApplicantReference())
+			@await Html.PartialAsync("~/Views/EntranceApplicantReference/Create.cshtml", new EntranceApplicantReference(){ EntranceApplicantID = Model.Id })
 			<br />
 			<div class="table-responsive">
 				<table class="table" id="dataTable">
@@ -24,27 +34,22 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td>Test</td>
-							<td>Church</td>
-							<td>Pastor</td>
-							<td>pastor@test.com</td>
-							<td>Accepted</td>
-							<td>Accepted</td>
-						</tr>
-						@*@foreach (var item in Model)
+						@foreach (var item in references)
 						{
 							<tr>
-								<td>@item.Name</td>
+								<td>@item.RefereeName</td>
 								<td>@item.Institution</td>
 								<td>@item.Position</td>
-								<td>@item.Email</td>
-								<td>@item.Status_Id</td>
+								<td>@item.EmailAddress</td>
+								<td>@item.StatusType.Name</td>
 								<td>
-
+									<form asp-action="Delete" asp-controller="EntranceApplicantReferences">
+										<input type="hidden" value="@item.Id" name="referenceId"/>
+										<button class="btn btn-sm btn-danger">Delete</button>
+									</form>
 								</td>
 							</tr>
-						}*@
+						}
 					</tbody>
 				</table>
 			</div>
