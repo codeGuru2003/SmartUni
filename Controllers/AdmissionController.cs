@@ -9,6 +9,7 @@ using SmartUni.Filters;
 using SmartUni.Models;
 using SmartUni.ViewModels;
 using System.Data;
+using System.Diagnostics.Metrics;
 
 namespace SmartUni.Controllers
 {
@@ -199,13 +200,11 @@ namespace SmartUni.Controllers
 						TempData["RecordSavedMessage"] = "Applicant does not exist";
 						return RedirectToAction("EducationalBackground");
 					default:
-						if (model.NameOfUniversity != null && model.UniversityCountryID != null && model.UniversityStartYear != null && model.UniversityEndYear != null)
-						{
 							check.CountyOfHighSchoolAttended = model.CountyOfHighSchoolAttended;
 							check.HighSchoolAttendedName = model.HighSchoolAttendedName;
 							check.StartYear = model.StartYear;
 							check.EndYear = model.EndYear;
-							check.NameOfUniversity = model.NameOfUniversity;
+							check.NameOfUniversity = model.NameOfUniversity ;
 							check.UniversityCountryID = Convert.ToInt32(model.UniversityCountryID);
 							check.UniversityStartYear = model.UniversityStartYear;
 							check.UniversityEndYear = model.UniversityEndYear;
@@ -213,9 +212,6 @@ namespace SmartUni.Controllers
 							await _context.SaveChangesAsync();
 							TempData["RecordSavedMessage"] = "Record has been updated.";
 							return RedirectToAction("ProgramInformation");
-						}
-						TempData["RecordSavedMessage"] = "Could not update record.";
-						return RedirectToAction("EducationalBackground");
 				}
 			}
 			var country = _context.CountryTypes.ToList();
@@ -330,25 +326,52 @@ namespace SmartUni.Controllers
 
         [AdmissionFilter]
         [HttpGet]
-        public IActionResult UploadPhoto()
+        public async Task<IActionResult> UploadPhoto()
         {
-            return View();
+			var session = HttpContext.Session.GetString("Token");
+			var check = await _context.EntranceApplicants.Where(x => x.StudentId.Contains(session)).FirstOrDefaultAsync();
+			return View(check);
         }
 
 		[AdmissionFilter]
 		[ValidateAntiForgeryToken]
 		[HttpPost]
-		public async Task<IActionResult> UploadPhoto(IFormFile file)
+		public async Task<IActionResult> UploadPhoto(EntranceApplicant applicant)
 		{
+			var session = HttpContext.Session.GetString("Token");
+			var check = await _context.EntranceApplicants.Where(x => x.StudentId.Contains(session)).FirstOrDefaultAsync();
+			var imageFile = Request.Form.Files["photograph"];
+			if (imageFile != null && imageFile.Length > 0)
+			{
+				string uploadsRoot = Path.Combine(_webHostEnvironment.WebRootPath, "applicantsphoto");
+				if (!Directory.Exists(uploadsRoot))
+				{
+					Directory.CreateDirectory(uploadsRoot);
+				}
 
+				string uniqueFileName = Guid.NewGuid().ToString() + "_" + imageFile.FileName;
+				string filePath = Path.Combine(uploadsRoot, uniqueFileName);
+
+				using (var fileStream = new FileStream(filePath, FileMode.Create))
+				{
+					await imageFile.CopyToAsync(fileStream);
+				}
+				
+				check.ImagePath = uniqueFileName;
+				_context.Update(check);
+				await _context.SaveChangesAsync();
+				return RedirectToAction("Summary");
+			}
 			return View();
 		}
 
         [AdmissionFilter]
         [HttpGet]
-        public IActionResult Summary()
+        public async Task<IActionResult> Summary()
         {
-            return View();
+            var session = HttpContext.Session.GetString("Token");
+            var check = await _context.EntranceApplicants.Where(x => x.StudentId.Contains(session)).FirstOrDefaultAsync();
+            return View(check);
         }
 
         [AdmissionFilter]

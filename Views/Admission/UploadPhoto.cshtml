@@ -1,4 +1,5 @@
-﻿@{
+﻿@model EntranceApplicant
+@{
 	Layout = "~/Views/Admission/_AdmissionLayout.cshtml";
 	ViewData["Title"] = "Upload Passportsize Photo";
 }
@@ -26,9 +27,18 @@
 			<div class="container"><br /><br />
 				<div class="card">
 					<div class="card-header">PHOTO PREVIEW</div>
-					<div class="card-body">
-						<img id="imgPreview" class="card-img" src="#" alt="Image Preview" />
-					</div>
+					@if(String.IsNullOrEmpty(Model.ImagePath))
+					{
+						<div class="card-body">
+							<img id="imgPreview" class="card-img" src="#" alt="Image Preview" />
+						</div>
+					}
+					else{
+						<div class="card-body">
+							<img id="imgPreview" class="card-img" src="~/applicantsphoto/@Model.ImagePath.Substring(44,59)" alt="Image Preview" />
+						</div>
+					}
+					
 				</div>
 			</div>
 		</div>
@@ -39,7 +49,7 @@
 				</div>
 				<div class="card-body">
 					<div></div>
-					<form asp-action="UploadPhoto" enctype="multipart/form-data">
+					<form asp-action="UploadPhoto" asp-controller="Admission" enctype="multipart/form-data">
 						<input class="form-control" type="file" name="photograph" id="photo" required /><br />
 						<button class="btn btn-primary">Upload</button>
 					</form>

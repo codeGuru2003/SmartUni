@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using SmartUni.Data;
 using SmartUni.Filters;
+using SmartUni.Models;
 
 namespace SmartUni.Controllers
 {
@@ -15,8 +16,19 @@ namespace SmartUni.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var applicants = _context.EntranceApplicants.Include(x => x.StatusType).Where(x => x.StatusType.Name.Contains("Pending"));
+            var applicants = _context.EntranceApplicants.Include(x => x.StatusType).Include(x=>x.TitleType).Include(x=>x.DepartmentDegree).Where(x => x.StatusType.Name.Contains("Pending"));
             return View(await applicants.ToListAsync());
+        }
+
+        public async Task<IActionResult> Details(int id)
+        {
+            var applicant = await _context.EntranceApplicants.Where(x => x.Id == id).FirstOrDefaultAsync();
+            if (applicant == null)
+            {
+                TempData["Message"] = "Record not found";
+                return Redirect("Index");
+            }
+            return View(applicant);
         }
     }
 }

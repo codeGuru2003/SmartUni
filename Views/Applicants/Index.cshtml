@@ -17,7 +17,6 @@
                             <th>Middle Name</th>
                             <th>Last Name</th>
                             <th>Phone Number</th>
-                            <th>Applying for</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -31,12 +30,8 @@
                                 <td>@item.MiddleName</td>
                                 <td>@item.LastName</td>
                                 <td>@item.PhoneNumber</td>
-                                <td>@item.DepartmentDegree</td>
                                 <td>
-                                    <form>
-                                        <button>Approve</button>
-                                        <button>Decline</button>
-                                    </form>
+                                    <a class="btn btn-primary bn-sm" asp-action="Details" asp-route-Id="@item.Id">Details</a> 
                                 </td>
                             </tr>
                             count++;

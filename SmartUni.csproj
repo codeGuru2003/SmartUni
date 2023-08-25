@@ -27,6 +27,7 @@
 
   <ItemGroup>
     <Folder Include="Reports\" />
+    <Folder Include="wwwroot\applicantsphoto\" />
     <Folder Include="wwwroot\usersphoto\" />
   </ItemGroup>
 
