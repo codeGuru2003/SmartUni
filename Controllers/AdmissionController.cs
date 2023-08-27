@@ -1,15 +1,13 @@
-﻿using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using NuGet.Common;
 using SmartUni.Data;
 using SmartUni.Filters;
 using SmartUni.Models;
 using SmartUni.ViewModels;
+using Syncfusion.HtmlConverter;
+using Syncfusion.Pdf;
 using System.Data;
-using System.Diagnostics.Metrics;
 
 namespace SmartUni.Controllers
 {
@@ -205,7 +203,7 @@ namespace SmartUni.Controllers
 							check.StartYear = model.StartYear;
 							check.EndYear = model.EndYear;
 							check.NameOfUniversity = model.NameOfUniversity ;
-							check.UniversityCountryID = Convert.ToInt32(model.UniversityCountryID);
+							check.UniversityCountryID = model.UniversityCountryID.HasValue ? Convert.ToInt32(model.UniversityCountryID) : (int?)null;
 							check.UniversityStartYear = model.UniversityStartYear;
 							check.UniversityEndYear = model.UniversityEndYear;
 							_context.EntranceApplicants.Update(check);
@@ -294,7 +292,11 @@ namespace SmartUni.Controllers
 		{
 			var session = HttpContext.Session.GetString("Token");
 			var check = await _context.EntranceApplicants.Where(x => x.StudentId.Contains(session)).FirstOrDefaultAsync();
-			return View(check);
+			if (check != null)
+			{
+				return View(check);
+			}
+			return View();
 		}
 
 		//Entrance Applicant Logout Method (Destroys Applicant Session)
@@ -370,15 +372,37 @@ namespace SmartUni.Controllers
         public async Task<IActionResult> Summary()
         {
             var session = HttpContext.Session.GetString("Token");
-            var check = await _context.EntranceApplicants.Where(x => x.StudentId.Contains(session)).FirstOrDefaultAsync();
+            var check = await _context.EntranceApplicants.Where(x => x.StudentId.Contains(session))
+				.Include(c=>c.DepartmentDegree)
+				.Include(b=>b.GenderType)
+				.Include(x=>x.TitleType).FirstOrDefaultAsync();
             return View(check);
         }
-
+		[HttpPost]
+		public async Task<IActionResult> Summary(int applicantId)
+		{
+			var applicant = await _context.EntranceApplicants.FindAsync(applicantId);
+			if (applicant != null )
+			{
+				var status = await _context.StatusTypes.Where(x => x.Name.Contains("Submitted")).FirstOrDefaultAsync();
+				applicant.StatusID = status.Id;
+				_context.Update(applicant);
+				await _context.SaveChangesAsync();
+				TempData["Message"] = "Application Submitted";
+				return RedirectToAction("ProofOfApplication");
+			}
+			return View();
+		}
         [AdmissionFilter]
         [HttpGet]
-        public IActionResult ProofOfApplication()
+        public async Task<IActionResult> ProofOfApplication()
         {
-            return View();
+            var session = HttpContext.Session.GetString("Token");
+            var check = await _context.EntranceApplicants.Where(x => x.StudentId.Contains(session))
+                .Include(c => c.DepartmentDegree)
+                .Include(b => b.GenderType)
+                .Include(x => x.TitleType).FirstOrDefaultAsync();
+            return View(check);
         }
 
         [AdmissionFilter]
@@ -449,6 +473,47 @@ namespace SmartUni.Controllers
 			_context.EntranceApplicantDocuments.Remove(pdfFile);
 			await _context.SaveChangesAsync();
 			return RedirectToAction("SupportingDocument");
+		}
+		public async Task<IActionResult> GenerateReport(int studentId)
+		{
+			HtmlToPdfConverter htmlConverter = new HtmlToPdfConverter();
+			var check = await _context.EntranceApplicants.Where(x => x.Id == studentId)
+			   .Include(c => c.DepartmentDegree)
+			   .Include(b => b.GenderType)
+			   .Include(x => x.TitleType).FirstOrDefaultAsync();
+			// HTML string and Base URL
+			string imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "applicantsphoto");
+			string htmlText = "<html><body>" +
+				$"<img src='{imagePath}\\{check.ImagePath}' width='50%' />"+
+				$"<h1 style='font-size:30px;'>Serial: {check.StudentId}</h1>" +
+				$"<h1 style='font-size:30px;'>Name: {check.FirstName} {check.MiddleName} {check.LastName}</h1>" +
+				$"<h1 style='font-size:30px;'>Date of Birth: {check.DateofBirth.ToString("yyyy-mm-dd")}</h1>" +
+				$"<h1 style='font-size:30px;'>Gender: {check.GenderType.Name}</h1>" +
+				$"<h1 style='font-size:30px;'>Address Line: {check.AddressLine1}</h1>" +
+				$"<h1 style='font-size:30px;'>Email Address: {check.EmailAddress}</h1>" +
+				$"<h1 style='font-size:30px;'>Phone Number: {check.PhoneNumber}<hr /></h1>" +
+				$"<h1 style='font-size:30px;'>High School Attended: {check.HighSchoolAttendedName}</h1>" +
+				$"<h1 style='font-size:30px;'>Entry Year: {check.EntryYear}</h1>" +
+				$"<h1 style='font-size:30px;'>Degree of Choice: {check.DepartmentDegree.Name}</h1>" +
+				"</body></html>";
+			string baseUrl = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "css");
+			
+
+			// Convert HTML to PDF
+			PdfDocument document = htmlConverter.Convert(htmlText, baseUrl);
+
+			// Create a memory stream to hold the PDF content
+			MemoryStream memoryStream = new MemoryStream();
+
+			// Save the PDF to the memory stream
+			document.Save(memoryStream);
+			document.Close(true);
+
+			// Set the position of the memory stream to the beginning
+			memoryStream.Seek(0, SeekOrigin.Begin);
+
+			// Return the PDF as a file download
+			return File(memoryStream, "application/pdf", $"{check.FirstName}_{check.MiddleName}_{check.LastName}_{DateTime.Now}.pdf");
 		}
 	}
 }

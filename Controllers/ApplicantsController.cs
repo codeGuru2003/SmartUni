@@ -16,19 +16,59 @@ namespace SmartUni.Controllers
         }
         public async Task<IActionResult> Index()
         {
-            var applicants = _context.EntranceApplicants.Include(x => x.StatusType).Include(x=>x.TitleType).Include(x=>x.DepartmentDegree).Where(x => x.StatusType.Name.Contains("Pending"));
+            var applicants = _context.EntranceApplicants.Include(x => x.StatusType).Include(x=>x.TitleType).Include(x=>x.DepartmentDegree).Where(x => x.StatusType.Name.Contains("Submitted"));
             return View(await applicants.ToListAsync());
         }
 
         public async Task<IActionResult> Details(int id)
         {
-            var applicant = await _context.EntranceApplicants.Where(x => x.Id == id).FirstOrDefaultAsync();
+			var applicant = await _context.EntranceApplicants.Where(x => x.Id == id)
+				.Include(c => c.DepartmentDegree)
+				.Include(b => b.GenderType)
+				.Include(x => x.TitleType).FirstOrDefaultAsync();
             if (applicant == null)
             {
                 TempData["Message"] = "Record not found";
                 return Redirect("Index");
             }
             return View(applicant);
+        }
+
+        //Method to Disapprove Referee
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeclineReferee(int refereeId, int applicantId)
+        {
+			var referee = await _context.EntranceApplicantReferences.Where(x => x.Id == refereeId).FirstOrDefaultAsync();
+			if (referee != null)
+			{
+				var status = await _context.StatusTypes.Where(s => s.Name.Contains("Denied")).FirstOrDefaultAsync();
+				referee.StatusTypeID = status.Id;
+				_context.EntranceApplicantReferences.Update(referee);
+				await _context.SaveChangesAsync();
+				TempData["Message"] = "Referee was Denied!";
+				return RedirectToAction("Details", new { id = applicantId });
+			}
+			TempData["Message"] = "Referee doesn't exist";
+			return RedirectToAction("Details", new { id = applicantId });
+		}
+        //Method to Approve Referee
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ApproveReferee(int refereeId, int applicantId)
+        {
+            var referee = await _context.EntranceApplicantReferences.Where(x => x.Id == refereeId).FirstOrDefaultAsync();
+            if (referee != null)
+            {
+                var status = await _context.StatusTypes.Where(s => s.Name.Contains("Approved")).FirstOrDefaultAsync();
+                referee.StatusTypeID = status.Id;
+                _context.EntranceApplicantReferences.Update(referee);
+                await _context.SaveChangesAsync();
+				TempData["Message"] = "Referee was approved!";
+				return RedirectToAction("Details", new { id = applicantId });
+			}
+            TempData["Message"] = "Referee doesn't exist";
+            return RedirectToAction("Details", new { id = applicantId });
         }
     }
 }
