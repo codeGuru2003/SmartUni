@@ -70,5 +70,23 @@ namespace SmartUni.Controllers
             TempData["Message"] = "Referee doesn't exist";
             return RedirectToAction("Details", new { id = applicantId });
         }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ApproveApplicant(int applicantId)
+        {
+            var applicant = await _context.EntranceApplicants.Where(x => x.Id == applicantId).FirstOrDefaultAsync();
+            if (applicant != null)
+            {
+				var status = await _context.StatusTypes.Where(s => s.Name.Contains("Approved")).FirstOrDefaultAsync();
+                applicant.StatusID = status.Id;
+                _context.EntranceApplicants.Update(applicant);
+                await _context.SaveChangesAsync();
+				TempData["Message"] = "Applicant was approved!";
+				return RedirectToAction("Index", "Applicants");
+			}
+			TempData["Message"] = "Applicant not found!";
+			return RedirectToAction("Details","Applicants", new { id = applicantId });
+        }
     }
 }

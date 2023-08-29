@@ -1,0 +1,82 @@
+﻿@model Course
+@{
+    ViewData["Title"] = "Create";
+}
+<div class="container">
+    <div class="card">
+        <div class="card-header">Create (Course)</div>
+        <div class="card-body">
+            <div class="container">
+                <form asp-action="Create" asp-controller="Courses">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Department</label>
+                                @Html.DropDownList("DepartmentID", (SelectList)ViewBag.DepartmentID, "Select Department", new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Course Type</label>
+                                @Html.DropDownList("CourseTypeID", (SelectList)ViewBag.CourseTypeID, "Select Course", new { @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Course Name</label>
+                                <input asp-for="CourseName" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Course Short Name</label>
+                                <input asp-for="CourseShortName" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Course Code</label>
+                                <input asp-for="CourseCode" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Credit Hours</label>
+                                <input asp-for="CreditHours" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Description</label>
+                                <input type="text" asp-for="Description" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Is Active</label>
+                                <input asp-for="IsActive" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>IsLab</label>
+                                <input asp-for="IsLab" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <button class="btn btn-success">Create</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

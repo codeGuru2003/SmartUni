@@ -70,9 +70,23 @@ namespace SmartUni.Controllers
         public async Task<IActionResult> Biodata()
 		{
 			var session = HttpContext.Session.GetString("Token");
-			var applicant = await _context.EntranceApplicants.Where(x => x.StudentId.Contains(session)).FirstOrDefaultAsync();
+			var applicant = await _context.EntranceApplicants.Include(s=>s.StatusType).Where(x => x.StudentId.Contains(session)).FirstOrDefaultAsync();
 			if (applicant != null)
 			{
+				if (applicant.StatusType.Name.Contains("Approved"))
+				{
+					ViewData["TitleTypeId"] = new SelectList(_context.TitleTypes, "Id", "Name");
+					ViewData["GenderId"] = new SelectList(_context.Genders, "Id", "Name");
+					ViewData["NationalityId"] = new SelectList(_context.NationalityTypes, "Id", "Name");
+					ViewData["CountryId"] = new SelectList(_context.CountryTypes, "Id", "Name");
+					ViewData["ReligionId"] = new SelectList(_context.ReligionTypes, "Id", "Name");
+					ViewData["MaritalStatusId"] = new SelectList(_context.MaritalStatusTypes, "Id", "Name");
+					ViewData["OccupationId"] = new SelectList(_context.OccupationTypes, "Id", "Name");
+					ViewData["RelationshipId"] = new SelectList(_context.RelationshipTypes, "Id", "Name");
+					ViewData["DisabilityId"] = new SelectList(_context.DisabilityTypes, "Id", "Name");
+					TempData["Status"] = "Approved";
+					return View(applicant);
+				}
                 ViewData["TitleTypeId"] = new SelectList(_context.TitleTypes, "Id", "Name");
                 ViewData["GenderId"] = new SelectList(_context.Genders, "Id", "Name");
                 ViewData["NationalityId"] = new SelectList(_context.NationalityTypes, "Id", "Name");
@@ -84,15 +98,6 @@ namespace SmartUni.Controllers
                 ViewData["DisabilityId"] = new SelectList(_context.DisabilityTypes, "Id", "Name");
                 return View(applicant);
             }
-			//var titleTypes = await _context.TitleTypes.ToListAsync();
-			//var selectList = new List<SelectListItem>
-			//{
-			//	new SelectListItem {Value = null, Text = "------------ Select Title -------------"}
-			//};
-			//selectList.AddRange(titleTypes.Select(items => new SelectListItem
-			//{
-			//		Value = items.Id.ToString(), Text = items.Name
-			//}));
 			ViewData["TitleTypeId"] = new SelectList(_context.TitleTypes, "Id", "Name");
 			ViewData["GenderId"] = new SelectList(_context.Genders, "Id", "Name");
 			ViewData["NationalityId"] = new SelectList(_context.NationalityTypes, "Id", "Name");
@@ -323,7 +328,11 @@ namespace SmartUni.Controllers
 		{
 			var session = HttpContext.Session.GetString("Token");
 			var check = await _context.EntranceApplicants.Where(x => x.StudentId.Contains(session)).FirstOrDefaultAsync();
-			return View(check);
+			if (check != null)
+			{
+				return View(check);
+			}
+			return View();
 		}
 
         [AdmissionFilter]
@@ -332,7 +341,11 @@ namespace SmartUni.Controllers
         {
 			var session = HttpContext.Session.GetString("Token");
 			var check = await _context.EntranceApplicants.Where(x => x.StudentId.Contains(session)).FirstOrDefaultAsync();
-			return View(check);
+			if (check != null)
+			{
+				return View(check);
+			}
+			return View();
         }
 
 		[AdmissionFilter]

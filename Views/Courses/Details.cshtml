@@ -1,0 +1,26 @@
+﻿@model Course
+@{
+    ViewData["Title"] = "Details";
+}
+<div class="container">
+    <div class="card">
+        <div class="card-header">Course (Detail)</div>
+        <div class="card-body">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label>Department</label>
+                        <select asp-for="DepartmentID" class="form-control" disabled asp-items="ViewBag.DepartmentID"></select>
+                    </div>
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4"></div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

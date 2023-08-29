@@ -3,228 +3,456 @@
 	Layout = "~/Views/Admission/_AdmissionLayout.cshtml";
 	ViewData["Title"] = "Bio Data";
 }
-<div class="container">
-	<div class="card" id="biodata">
-		@if (TempData["LoginMessage"] != null)
-		{
-			<script>
-				alert('@TempData["LoginMessage"]');
-				@{
-					TempData.Remove("LoginMessage");
-				}
-			</script>
-		}
-		<div class="card-header">
-			<p>BIODATA</p>
-			<p><span class="text-danger"><b>NOTE</b></span>: ALL FIELDS MARK * ARE REQUIRED</p>
-		</div>
-		<div class="card-body">
-			<div class="form">
-				<form asp-action="Biodata" asp-controller="Admission">
-					<p style="color:darkblue"><b>PERSONAL INFORMATION</b></p><hr />
-					<input type="hidden" name="Student" asp-for="StudentId" />
-					<div class="row">
-						<div class="col-md-4">
-							<div class="form-group">
-								<label asp-for="FirstName" class="form-label">Title<span class="text-danger"> *</span></label>
-								<select asp-for="TitleID" asp-items="@ViewBag.TitleTypeId" class="form-control"></select>
+@if (TempData["Status"] == "Approved")
+{
+	<div class="container">
+		<div class="card" id="biodata">
+			@if (TempData["LoginMessage"] != null)
+			{
+				<script>
+					alert('@TempData["LoginMessage"]');
+					@{
+						TempData.Remove("LoginMessage");
+					}
+				</script>
+			}
+			<div class="card-header">
+				<p>BIODATA</p>
+				<p><span class="text-danger"><b>NOTE</b></span>: ALL FIELDS MARK * ARE REQUIRED</p>
+			</div>
+			<div class="card-body">
+				<div class="form">
+					<form asp-action="Biodata" asp-controller="Admission">
+						<p style="color:darkblue"><b>PERSONAL INFORMATION</b></p><hr />
+						<input type="hidden" name="Student" asp-for="StudentId" />
+						<div class="row">
+							<div class="col-md-4">
+								<div class="form-group">
+									<label asp-for="FirstName" class="form-label">Title<span class="text-danger"> *</span></label>
+									<select asp-for="TitleID" asp-items="@ViewBag.TitleTypeId" class="form-control" disabled></select>
+								</div>
+							</div>
+							<div class="col-md-4"></div>
+							<div class="col-md-4"></div>
+						</div>
+						<div class="row">
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="form-label">First Name<span class="text-danger"> *</span></label>
+									<input asp-for=FirstName class="form-control" required disabled />
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="form-label">Middle Name</label>
+									<input asp-for=MiddleName class="form-control" disabled />
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="form-label">Last Name<span class="text-danger"> *</span></label>
+									<input asp-for=LastName class="form-control" required disabled />
+								</div>
 							</div>
 						</div>
-						<div class="col-md-4"></div>
-						<div class="col-md-4"></div>
-					</div>
-					<div class="row">
-						<div class="col-md-4">
-							<div class="form-group">
-								<label class="form-label">First Name<span class="text-danger"> *</span></label>
-								<input asp-for=FirstName class="form-control" required />
+						<div class="row">
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="form-label">Gender<span class="text-danger"> *</span></label>
+									<select asp-for="GenderID" asp-items="@ViewBag.GenderId" class="form-control" disabled></select>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="form-label">Date of Birth<span class="text-danger"> *</span></label>
+									<input asp-for=DateofBirth type="date" class="form-control" required disabled />
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="form-label">Hometown<span class="text-danger"> *</span></label>
+									<input asp-for=Hometown_State placeholder="County / State" class="form-control" required disabled/>
+								</div>
 							</div>
 						</div>
-						<div class="col-md-4">
-							<div class="form-group">
-								<label class="form-label">Middle Name</label>
-								<input asp-for=MiddleName class="form-control" />
+						<div class="row">
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="form-label">Nationality<span class="text-danger"> *</span></label>
+									<select asp-for="NationalityID" asp-items="@ViewBag.NationalityId" class="form-control" disabled></select>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="form-label">Country of Current Residence<span class="text-danger"> *</span></label>
+									<select asp-for="CountryID" asp-items="@ViewBag.CountryId" class="form-control" disabled></select>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="form-label">Religious Denomination<span class="text-danger"> *</span></label>
+									<select asp-for="ReligionID" asp-items="@ViewBag.ReligionId" class="form-control" disabled></select>
+								</div>
 							</div>
 						</div>
-						<div class="col-md-4">
-							<div class="form-group">
-								<label class="form-label">Last Name<span class="text-danger"> *</span></label>
-								<input asp-for=LastName class="form-control" required />
+						<div class="row">
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="form-label">Marital Status<span class="text-danger"> *</span></label>
+									<select asp-for="MaritalStatusID" asp-items="@ViewBag.MaritalStatusId" class="form-control" disabled></select>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="form-label">Number of Children(if any)</label>
+									<input asp-for=NumberofChildren class="form-control" disabled/>
+								</div>
+							</div>
+							<div class="col-md-4">
 							</div>
 						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-4">
-							<div class="form-group">
-								<label class="form-label">Gender<span class="text-danger"> *</span></label>
-								<select asp-for="GenderID" asp-items="@ViewBag.GenderId" class="form-control"></select>
+						<p style="color:darkblue"><b>ADDRESS OF APPLICANT</b></p><hr />
+						<div class="row">
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="form-label">Current Address<span class="text-danger"> *</span></label>
+									<input asp-for=CurrentAddress class="form-control" required disabled/>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="form-label">Phone Number<span class="text-danger"> *</span></label>
+									<input asp-for=PhoneNumber class="form-control" required disabled/>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="form-label">Email Address<span class="text-danger"> *</span></label>
+									<input asp-for=EmailAddress class="form-control" required disabled/>
+								</div>
 							</div>
 						</div>
-						<div class="col-md-4">
-							<div class="form-group">
-								<label class="form-label">Date of Birth<span class="text-danger"> *</span></label>
-								<input asp-for=DateofBirth type="date" class="form-control" required />
+						<p style="color:darkblue"><b>PERMANENT HOME ADDRESS IF DIFFERENT FROM THE POSTAL ADDRESS ABOVE:</b></p><hr />
+						<div class="row">
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="form-label">Adress Line 1 (name or C/o) ?<span class="text-danger"> *</span></label>
+									<input asp-for=AddressLine1 class="form-control" disabled/>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="form-label">Address Line 2 (box number) ?<span class="text-danger"> *</span></label>
+									<input asp-for=AddressLine2 class="form-control"  disabled/>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="form-label">Address Line 3 (city/town)<span class="text-danger"> *</span></label>
+									<input asp-for=AddressLine3 class="form-control"  disabled/>
+								</div>
 							</div>
 						</div>
-						<div class="col-md-4">
-							<div class="form-group">
-								<label class="form-label">Hometown<span class="text-danger"> *</span></label>
-								<input asp-for=Hometown_State placeholder="County / State" class="form-control" required />
+						<p style="color:darkblue"><b>PARENT/GUARDIAN/NEXT OF KIN INFORMATION</b></p><hr />
+						<div class="row">
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="form-label">Name of Next of Kin<span class="text-danger"> *</span></label>
+									<input asp-for=NextofKin class="form-control" required  disabled/>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="form-label">Occupation of Next of Kin<span class="text-danger"> *</span></label>
+									<select asp-for="OccupationID" asp-items="@ViewBag.OccupationId" class="form-control" disabled></select>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="form-label">Name of Person to contact in case of emergency<span class="text-danger"> *</span></label>
+									<input asp-for=EmergencyContact class="form-control" required  disabled/>
+								</div>
 							</div>
 						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-4">
-							<div class="form-group">
-								<label class="form-label">Nationality<span class="text-danger"> *</span></label>
-								<select asp-for="NationalityID" asp-items="@ViewBag.NationalityId" class="form-control"></select>
+						<div class="row">
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="form-label">Relation to candidate<span class="text-danger"> *</span></label>
+									<select asp-for="RelationshipTypeID" asp-items="@ViewBag.RelationshipId" class="form-control" disabled></select>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="form-label">Address <span class="text-danger"> *</span></label>
+									<input asp-for=Address class="form-control" required  disabled/>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="form-label">Email<span class="text-danger"> *</span></label>
+									<input asp-for=Email class="form-control" required  disabled/>
+								</div>
 							</div>
 						</div>
-						<div class="col-md-4">
-							<div class="form-group">
-								<label class="form-label">Country of Current Residence<span class="text-danger"> *</span></label>
-								<select asp-for="CountryID" asp-items="@ViewBag.CountryId" class="form-control"></select>
+						<div class="row">
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="form-label">Telephone <span class="text-danger"> *</span></label>
+									<input asp-for=Telephone class="form-control" required  disabled/>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+								</div>
 							</div>
 						</div>
-						<div class="col-md-4">
-							<div class="form-group">
-								<label class="form-label">Religious Denomination<span class="text-danger"> *</span></label>
-								<select asp-for="ReligionID" asp-items="@ViewBag.ReligionId" class="form-control"></select>
+						<p style="color:darkblue"><b>DISABILITY INFORMATION</b></p><hr />
+						<div class="row">
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="form-label">Do you have any physical disability<span class="text-danger"> *</span></label>
+									<select asp-for="DisabilityTypeID" asp-items="@ViewBag.DisabilityId" class="form-control" disabled></select>
+								</div>
+							</div>
+							<div class="col-md-4">
+							</div>
+							<div class="col-md-4">
 							</div>
 						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-4">
-							<div class="form-group">
-								<label class="form-label">Marital Status<span class="text-danger"> *</span></label>
-								<select asp-for="MaritalStatusID" asp-items="@ViewBag.MaritalStatusId" class="form-control"></select>
-							</div>
-						</div>
-						<div class="col-md-4">
-							<div class="form-group">
-								<label class="form-label">Number of Children(if any)</label>
-								<input asp-for=NumberofChildren class="form-control" />
-							</div>
-						</div>
-						<div class="col-md-4">
-						</div>
-					</div>
-					<p style="color:darkblue"><b>ADDRESS OF APPLICANT</b></p><hr />
-					<div class="row">
-						<div class="col-md-4">
-							<div class="form-group">
-								<label class="form-label">Current Address<span class="text-danger"> *</span></label>
-								<input asp-for=CurrentAddress class="form-control" required />
-							</div>
-						</div>
-						<div class="col-md-4">
-							<div class="form-group">
-								<label class="form-label">Phone Number<span class="text-danger"> *</span></label>
-								<input asp-for=PhoneNumber class="form-control" required />
-							</div>
-						</div>
-						<div class="col-md-4">
-							<div class="form-group">
-								<label class="form-label">Email Address<span class="text-danger"> *</span></label>
-								<input asp-for=EmailAddress class="form-control" required />
-							</div>
-						</div>
-					</div>
-					<p style="color:darkblue"><b>PERMANENT HOME ADDRESS IF DIFFERENT FROM THE POSTAL ADDRESS ABOVE:</b></p><hr />
-					<div class="row">
-						<div class="col-md-4">
-							<div class="form-group">
-								<label class="form-label">Adress Line 1 (name or C/o) ?<span class="text-danger"> *</span></label>
-								<input asp-for=AddressLine1 class="form-control"  />
-							</div>
-						</div>
-						<div class="col-md-4">
-							<div class="form-group">
-								<label class="form-label">Address Line 2 (box number) ?<span class="text-danger"> *</span></label>
-								<input asp-for=AddressLine2 class="form-control"  />
-							</div>
-						</div>
-						<div class="col-md-4">
-							<div class="form-group">
-								<label class="form-label">Address Line 3 (city/town)<span class="text-danger"> *</span></label>
-								<input asp-for=AddressLine3 class="form-control" />
-							</div>
-						</div>
-					</div>
-					<p style="color:darkblue"><b>PARENT/GUARDIAN/NEXT OF KIN INFORMATION</b></p><hr />
-					<div class="row">
-						<div class="col-md-4">
-							<div class="form-group">
-								<label class="form-label">Name of Next of Kin<span class="text-danger"> *</span></label>
-								<input asp-for=NextofKin class="form-control" required />
-							</div>
-						</div>
-						<div class="col-md-4">
-							<div class="form-group">
-								<label class="form-label">Occupation of Next of Kin<span class="text-danger"> *</span></label>
-								<select asp-for="OccupationID" asp-items="@ViewBag.OccupationId" class="form-control"></select>
-							</div>
-						</div>
-						<div class="col-md-4">
-							<div class="form-group">
-								<label class="form-label">Name of Person to contact in case of emergency<span class="text-danger"> *</span></label>
-								<input asp-for=EmergencyContact class="form-control" required />
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-4">
-							<div class="form-group">
-								<label class="form-label">Relation to candidate<span class="text-danger"> *</span></label>
-								<select asp-for="RelationshipTypeID" asp-items="@ViewBag.RelationshipId" class="form-control"></select>
-							</div>
-						</div>
-						<div class="col-md-4">
-							<div class="form-group">
-								<label class="form-label">Address <span class="text-danger"> *</span></label>
-								<input asp-for=Address class="form-control" required />
-							</div>
-						</div>
-						<div class="col-md-4">
-							<div class="form-group">
-								<label class="form-label">Email<span class="text-danger"> *</span></label>
-								<input asp-for=Email class="form-control" required />
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-4">
-							<div class="form-group">
-								<label class="form-label">Telephone <span class="text-danger"> *</span></label>
-								<input asp-for=Telephone class="form-control" required />
-							</div>
-						</div>
-						<div class="col-md-4">
-							<div class="form-group">
-							</div>
-						</div>
-					</div>
-					<p style="color:darkblue"><b>DISABILITY INFORMATION</b></p><hr />
-					<div class="row">
-						<div class="col-md-4">
-							<div class="form-group">
-								<label class="form-label">Do you have any physical disability<span class="text-danger"> *</span></label>
-								<select asp-for="DisabilityTypeID" asp-items="@ViewBag.DisabilityId" class="form-control"></select>
-							</div>
-						</div>
-						<div class="col-md-4">
-						</div>
-						<div class="col-md-4">
-						</div>
-					</div>
-					<br />
-					<button style="background: darkblue;" class="btn text-light">Save and Continue</button>
-				</form>
+						<br />
+						<button style="background: darkblue;" class="btn text-light" disabled>Save and Continue</button>
+					</form>
+				</div>
 			</div>
 		</div>
+		<br />
 	</div>
-	<br />
-</div>
+}
+else
+{
+	<div class="container">
+		<div class="card" id="biodata">
+			@if (TempData["LoginMessage"] != null)
+			{
+				<script>
+					alert('@TempData["LoginMessage"]');
+					@{
+						TempData.Remove("LoginMessage");
+					}
+				</script>
+			}
+			<div class="card-header">
+				<p>BIODATA</p>
+				<p><span class="text-danger"><b>NOTE</b></span>: ALL FIELDS MARK * ARE REQUIRED</p>
+			</div>
+			<div class="card-body">
+				<div class="form">
+					<form asp-action="Biodata" asp-controller="Admission">
+						<p style="color:darkblue"><b>PERSONAL INFORMATION</b></p><hr />
+						<input type="hidden" name="Student" asp-for="StudentId" />
+						<div class="row">
+							<div class="col-md-4">
+								<div class="form-group">
+									<label asp-for="FirstName" class="form-label">Title<span class="text-danger"> *</span></label>
+									<select asp-for="TitleID" asp-items="@ViewBag.TitleTypeId" class="form-control"></select>
+								</div>
+							</div>
+							<div class="col-md-4"></div>
+							<div class="col-md-4"></div>
+						</div>
+						<div class="row">
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="form-label">First Name<span class="text-danger"> *</span></label>
+									<input asp-for=FirstName class="form-control" required />
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="form-label">Middle Name</label>
+									<input asp-for=MiddleName class="form-control" />
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="form-label">Last Name<span class="text-danger"> *</span></label>
+									<input asp-for=LastName class="form-control" required />
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="form-label">Gender<span class="text-danger"> *</span></label>
+									<select asp-for="GenderID" asp-items="@ViewBag.GenderId" class="form-control"></select>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="form-label">Date of Birth<span class="text-danger"> *</span></label>
+									<input asp-for=DateofBirth type="date" class="form-control" required />
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="form-label">Hometown<span class="text-danger"> *</span></label>
+									<input asp-for=Hometown_State placeholder="County / State" class="form-control" required />
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="form-label">Nationality<span class="text-danger"> *</span></label>
+									<select asp-for="NationalityID" asp-items="@ViewBag.NationalityId" class="form-control"></select>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="form-label">Country of Current Residence<span class="text-danger"> *</span></label>
+									<select asp-for="CountryID" asp-items="@ViewBag.CountryId" class="form-control"></select>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="form-label">Religious Denomination<span class="text-danger"> *</span></label>
+									<select asp-for="ReligionID" asp-items="@ViewBag.ReligionId" class="form-control"></select>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="form-label">Marital Status<span class="text-danger"> *</span></label>
+									<select asp-for="MaritalStatusID" asp-items="@ViewBag.MaritalStatusId" class="form-control"></select>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="form-label">Number of Children(if any)</label>
+									<input asp-for=NumberofChildren class="form-control" />
+								</div>
+							</div>
+							<div class="col-md-4">
+							</div>
+						</div>
+						<p style="color:darkblue"><b>ADDRESS OF APPLICANT</b></p><hr />
+						<div class="row">
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="form-label">Current Address<span class="text-danger"> *</span></label>
+									<input asp-for=CurrentAddress class="form-control" required />
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="form-label">Phone Number<span class="text-danger"> *</span></label>
+									<input asp-for=PhoneNumber class="form-control" required />
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="form-label">Email Address<span class="text-danger"> *</span></label>
+									<input asp-for=EmailAddress class="form-control" required />
+								</div>
+							</div>
+						</div>
+						<p style="color:darkblue"><b>PERMANENT HOME ADDRESS IF DIFFERENT FROM THE POSTAL ADDRESS ABOVE:</b></p><hr />
+						<div class="row">
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="form-label">Adress Line 1 (name or C/o) ?<span class="text-danger"> *</span></label>
+									<input asp-for=AddressLine1 class="form-control" />
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="form-label">Address Line 2 (box number) ?<span class="text-danger"> *</span></label>
+									<input asp-for=AddressLine2 class="form-control" />
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="form-label">Address Line 3 (city/town)<span class="text-danger"> *</span></label>
+									<input asp-for=AddressLine3 class="form-control" />
+								</div>
+							</div>
+						</div>
+						<p style="color:darkblue"><b>PARENT/GUARDIAN/NEXT OF KIN INFORMATION</b></p><hr />
+						<div class="row">
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="form-label">Name of Next of Kin<span class="text-danger"> *</span></label>
+									<input asp-for=NextofKin class="form-control" required />
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="form-label">Occupation of Next of Kin<span class="text-danger"> *</span></label>
+									<select asp-for="OccupationID" asp-items="@ViewBag.OccupationId" class="form-control"></select>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="form-label">Name of Person to contact in case of emergency<span class="text-danger"> *</span></label>
+									<input asp-for=EmergencyContact class="form-control" required />
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="form-label">Relation to candidate<span class="text-danger"> *</span></label>
+									<select asp-for="RelationshipTypeID" asp-items="@ViewBag.RelationshipId" class="form-control"></select>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="form-label">Address <span class="text-danger"> *</span></label>
+									<input asp-for=Address class="form-control" required />
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="form-label">Email<span class="text-danger"> *</span></label>
+									<input asp-for=Email class="form-control" required />
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="form-label">Telephone <span class="text-danger"> *</span></label>
+									<input asp-for=Telephone class="form-control" required />
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+								</div>
+							</div>
+						</div>
+						<p style="color:darkblue"><b>DISABILITY INFORMATION</b></p><hr />
+						<div class="row">
+							<div class="col-md-4">
+								<div class="form-group">
+									<label class="form-label">Do you have any physical disability<span class="text-danger"> *</span></label>
+									<select asp-for="DisabilityTypeID" asp-items="@ViewBag.DisabilityId" class="form-control"></select>
+								</div>
+							</div>
+							<div class="col-md-4">
+							</div>
+							<div class="col-md-4">
+							</div>
+						</div>
+						<br />
+						<button style="background: darkblue;" class="btn text-light">Save and Continue</button>
+					</form>
+				</div>
+			</div>
+		</div>
+		<br />
+	</div>
+}
 <script type="text/javascript">
 	function sayHello(){
 		var printDiv = document.getElementById("biodata");

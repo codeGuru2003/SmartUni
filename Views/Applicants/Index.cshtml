@@ -3,6 +3,15 @@
     ViewData["Title"] = "Applicants";
     var count = 1;
 }
+@if (TempData["Message"] != null)
+{
+    <script>
+        alert('@TempData["Message"]');
+        @{
+            TempData.Remove("Message");
+        }
+    </script>
+}
 <div class="container">
     <div class="card">
         <div class="card-header">List of Applicants</div>
