@@ -39,7 +39,6 @@ namespace SmartUni.Controllers
 				{
 					case null:
 						TempData["Message"] = "Invalid Token";
-						TempData["Type"] = "danger";
 						return View();
 					default:
 						switch (check_token.HasEntered)
@@ -176,10 +175,24 @@ namespace SmartUni.Controllers
 			}));
 
 			var session = HttpContext.Session.GetString("Token");
-			var applicant = await _context.EntranceApplicants.Where(x => x.StudentId.Contains(session)).FirstOrDefaultAsync();
-			if (applicant != null)
+            var applicant = await _context.EntranceApplicants.Include(s => s.StatusType).Where(x => x.StudentId.Contains(session)).FirstOrDefaultAsync();
+            if (applicant != null)
 			{
-				ViewData["CountryId"] = selectList;
+                if (applicant.StatusType.Name.Contains("Approved"))
+                {
+                    ViewData["TitleTypeId"] = new SelectList(_context.TitleTypes, "Id", "Name");
+                    ViewData["GenderId"] = new SelectList(_context.Genders, "Id", "Name");
+                    ViewData["NationalityId"] = new SelectList(_context.NationalityTypes, "Id", "Name");
+                    ViewData["CountryId"] = new SelectList(_context.CountryTypes, "Id", "Name");
+                    ViewData["ReligionId"] = new SelectList(_context.ReligionTypes, "Id", "Name");
+                    ViewData["MaritalStatusId"] = new SelectList(_context.MaritalStatusTypes, "Id", "Name");
+                    ViewData["OccupationId"] = new SelectList(_context.OccupationTypes, "Id", "Name");
+                    ViewData["RelationshipId"] = new SelectList(_context.RelationshipTypes, "Id", "Name");
+                    ViewData["DisabilityId"] = new SelectList(_context.DisabilityTypes, "Id", "Name");
+                    TempData["Status"] = "Approved";
+                    return View(applicant);
+                }
+                ViewData["CountryId"] = selectList;
 				return View(applicant);
 			}
 			ViewData["CountryId"] = selectList;
@@ -239,10 +252,24 @@ namespace SmartUni.Controllers
 		public async Task<IActionResult> ProgramInformation()
 		{
 			var session = HttpContext.Session.GetString("Token");
-			var applicant = await _context.EntranceApplicants.Where(x => x.StudentId.Contains(session)).FirstOrDefaultAsync();
-			if (applicant != null)
+            var applicant = await _context.EntranceApplicants.Include(s => s.StatusType).Where(x => x.StudentId.Contains(session)).FirstOrDefaultAsync();
+            if (applicant != null)
 			{
-				ViewData["CollegeID"] = new SelectList(_context.College, "Id", "Name");
+                if (applicant.StatusType.Name.Contains("Approved"))
+                {
+                    ViewData["TitleTypeId"] = new SelectList(_context.TitleTypes, "Id", "Name");
+                    ViewData["GenderId"] = new SelectList(_context.Genders, "Id", "Name");
+                    ViewData["NationalityId"] = new SelectList(_context.NationalityTypes, "Id", "Name");
+                    ViewData["CountryId"] = new SelectList(_context.CountryTypes, "Id", "Name");
+                    ViewData["ReligionId"] = new SelectList(_context.ReligionTypes, "Id", "Name");
+                    ViewData["MaritalStatusId"] = new SelectList(_context.MaritalStatusTypes, "Id", "Name");
+                    ViewData["OccupationId"] = new SelectList(_context.OccupationTypes, "Id", "Name");
+                    ViewData["RelationshipId"] = new SelectList(_context.RelationshipTypes, "Id", "Name");
+                    ViewData["DisabilityId"] = new SelectList(_context.DisabilityTypes, "Id", "Name");
+                    TempData["Status"] = "Approved";
+                    return View(applicant);
+                }
+                ViewData["CollegeID"] = new SelectList(_context.College, "Id", "Name");
 				ViewData["OfferingTypeId"] = new SelectList(_context.OfferingTypes, "Id", "Name");
 				return View(applicant);
 			}
@@ -296,9 +323,23 @@ namespace SmartUni.Controllers
 		public async Task<IActionResult> References()
 		{
 			var session = HttpContext.Session.GetString("Token");
-			var check = await _context.EntranceApplicants.Where(x => x.StudentId.Contains(session)).FirstOrDefaultAsync();
-			if (check != null)
+            var check = await _context.EntranceApplicants.Include(s => s.StatusType).Where(x => x.StudentId.Contains(session)).FirstOrDefaultAsync();
+            if (check != null)
 			{
+				if (check.StatusType.Name.Contains("Approved"))
+				{
+					ViewData["TitleTypeId"] = new SelectList(_context.TitleTypes, "Id", "Name");
+					ViewData["GenderId"] = new SelectList(_context.Genders, "Id", "Name");
+					ViewData["NationalityId"] = new SelectList(_context.NationalityTypes, "Id", "Name");
+					ViewData["CountryId"] = new SelectList(_context.CountryTypes, "Id", "Name");
+					ViewData["ReligionId"] = new SelectList(_context.ReligionTypes, "Id", "Name");
+					ViewData["MaritalStatusId"] = new SelectList(_context.MaritalStatusTypes, "Id", "Name");
+					ViewData["OccupationId"] = new SelectList(_context.OccupationTypes, "Id", "Name");
+					ViewData["RelationshipId"] = new SelectList(_context.RelationshipTypes, "Id", "Name");
+					ViewData["DisabilityId"] = new SelectList(_context.DisabilityTypes, "Id", "Name");
+					TempData["Status"] = "Approved";
+					return View(check);
+				}
 				return View(check);
 			}
 			return View();
@@ -327,10 +368,24 @@ namespace SmartUni.Controllers
 		public async Task<IActionResult> SupportingDocument()
 		{
 			var session = HttpContext.Session.GetString("Token");
-			var check = await _context.EntranceApplicants.Where(x => x.StudentId.Contains(session)).FirstOrDefaultAsync();
-			if (check != null)
+            var check = await _context.EntranceApplicants.Include(s => s.StatusType).Where(x => x.StudentId.Contains(session)).FirstOrDefaultAsync();
+            if (check != null)
 			{
-				return View(check);
+                if (check.StatusType.Name.Contains("Approved"))
+                {
+                    ViewData["TitleTypeId"] = new SelectList(_context.TitleTypes, "Id", "Name");
+                    ViewData["GenderId"] = new SelectList(_context.Genders, "Id", "Name");
+                    ViewData["NationalityId"] = new SelectList(_context.NationalityTypes, "Id", "Name");
+                    ViewData["CountryId"] = new SelectList(_context.CountryTypes, "Id", "Name");
+                    ViewData["ReligionId"] = new SelectList(_context.ReligionTypes, "Id", "Name");
+                    ViewData["MaritalStatusId"] = new SelectList(_context.MaritalStatusTypes, "Id", "Name");
+                    ViewData["OccupationId"] = new SelectList(_context.OccupationTypes, "Id", "Name");
+                    ViewData["RelationshipId"] = new SelectList(_context.RelationshipTypes, "Id", "Name");
+                    ViewData["DisabilityId"] = new SelectList(_context.DisabilityTypes, "Id", "Name");
+                    TempData["Status"] = "Approved";
+                    return View(check);
+                }
+                return View(check);
 			}
 			return View();
 		}
@@ -340,10 +395,24 @@ namespace SmartUni.Controllers
         public async Task<IActionResult> UploadPhoto()
         {
 			var session = HttpContext.Session.GetString("Token");
-			var check = await _context.EntranceApplicants.Where(x => x.StudentId.Contains(session)).FirstOrDefaultAsync();
-			if (check != null)
+            var check = await _context.EntranceApplicants.Include(s => s.StatusType).Where(x => x.StudentId.Contains(session)).FirstOrDefaultAsync();
+            if (check != null)
 			{
-				return View(check);
+                if (check.StatusType.Name.Contains("Approved"))
+                {
+                    ViewData["TitleTypeId"] = new SelectList(_context.TitleTypes, "Id", "Name");
+                    ViewData["GenderId"] = new SelectList(_context.Genders, "Id", "Name");
+                    ViewData["NationalityId"] = new SelectList(_context.NationalityTypes, "Id", "Name");
+                    ViewData["CountryId"] = new SelectList(_context.CountryTypes, "Id", "Name");
+                    ViewData["ReligionId"] = new SelectList(_context.ReligionTypes, "Id", "Name");
+                    ViewData["MaritalStatusId"] = new SelectList(_context.MaritalStatusTypes, "Id", "Name");
+                    ViewData["OccupationId"] = new SelectList(_context.OccupationTypes, "Id", "Name");
+                    ViewData["RelationshipId"] = new SelectList(_context.RelationshipTypes, "Id", "Name");
+                    ViewData["DisabilityId"] = new SelectList(_context.DisabilityTypes, "Id", "Name");
+                    TempData["Status"] = "Approved";
+                    return View(check);
+                }
+                return View(check);
 			}
 			return View();
         }

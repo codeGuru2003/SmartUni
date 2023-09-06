@@ -1,6 +1,11 @@
-﻿@model Course
+﻿@inject ApplicationDbContext _context
+@model Course
 @{
     ViewData["Title"] = "Details";
+    var coursebillingItems = await _context.CourseBillingItems
+            .Where(x => x.CourseID == Model.Id)
+            .ToListAsync();
+    int count = 1;
 }
 <div class="container">
     <div class="card">
@@ -12,15 +17,100 @@
                         <label>Department</label>
                         <select asp-for="DepartmentID" class="form-control" disabled asp-items="ViewBag.DepartmentID"></select>
                     </div>
-                    <div class="col-md-4"></div>
-                    <div class="col-md-4"></div>
+                    <div class="col-md-4">
+                        <label>Type of Course</label>
+                        <select asp-for="CourseTypeID" class="form-control" disabled asp-items="ViewBag.CourseTypeID"></select>
+                    </div>
+                    <div class="col-md-4">
+                        <label>Course Name</label>
+                        <input asp-for="CourseName" class="form-control" disabled />
+                    </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-4"></div>
-                    <div class="col-md-4"></div>
-                    <div class="col-md-4"></div>
+                    <div class="col-md-4">
+                        <label>Course Short Name</label>
+                        <input asp-for="CourseShortName" class="form-control" disabled />
+                    </div>
+                    <div class="col-md-4">
+                        <label>Course Code</label>
+                        <input asp-for="CourseCode" class="form-control" disabled />
+                    </div>
+                    <div class="col-md-4">
+                        <label>Credit Hours</label>
+                        <input asp-for="CreditHours" class="form-control" disabled />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <label>Description</label>
+                        <input type="text" asp-for="Description" class="form-control" disabled />
+                    </div>
+                    <div class="col-md-4">
+                        <label>Is Active</label>
+                        <input asp-for="IsActive" class="form-control" disabled />
+                    </div>
+                    <div class="col-md-4">
+                        <label>IsLab</label>
+                        <input asp-for="IsLab" class="form-control" disabled />
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+    <br />
+    <div class="card">
+        <div class="card-header">Course Billing Items</div>
+        <div class="card-body">
+            <button class="btn btn-primary">Create</button><br /><br />
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Billing Type</th>
+                            <th>Item Name</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in coursebillingItems)
+                        {
+                            <tr>
+                                <td>@count</td>
+                                <td>@item.BillingType.Name</td>
+                                <td>@item.ItemName</td>
+                                <td>
+                                    <form asp-action="Delete" asp-controller="CourseBillingItems">
+                                        <input type="hidden" name="Id" value="@item.Id" />
+                                        <button class="btn btn-danger">Delete</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            count++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div class="card">
+        <div class="card-header">Course Cost</div>
+        <div class="card-body">
+            <a class="btn btn-primary" asp-action="Create" asp-controller="CourseCost">Create</a><br /><br />
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <br />
 </div>

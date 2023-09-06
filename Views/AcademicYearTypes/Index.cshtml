@@ -22,21 +22,6 @@
                             <th>
                                 @Html.DisplayNameFor(model => model.Name)
                             </th>
-                            @if (User.IsInRole("SuperAdmin"))
-                            {
-                                <th>
-                                    Created By
-                                </th>
-                                <th>
-                                    Created On
-                                </th>
-                                <th>
-                                    Modified By
-                                </th>
-                                <th>
-                                    Modified On
-                                </th>
-                            }
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -50,18 +35,6 @@
                                 </td>
                                 @if (User.IsInRole("SuperAdmin"))
                                 {
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.CreatedBy)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.CreatedOn)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.ModifiedBy)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.ModifiedOn)
-                                    </td>
                                     <td>
                                         <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Edit</a> |
                                         <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Details</a> |

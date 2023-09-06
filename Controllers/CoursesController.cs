@@ -32,8 +32,6 @@ namespace SmartUni.Controllers
 		{
 			if (course != null)
 			{
-				course.IsActive = true != null;
-				course.IsLab = true != null;
 				_context.Courses.Add(course);
 				await _context.SaveChangesAsync();
 				TempData["Message"] = "Course was created successfully";
@@ -50,7 +48,23 @@ namespace SmartUni.Controllers
 				.Include(m=>m.CourseType)
 				.FirstOrDefaultAsync();
 			ViewData["DepartmentID"] = new SelectList(_context.Departments, "Id", "Name", course.DepartmentID);
+			ViewData["CourseTypeID"] = new SelectList(_context.CourseTypes, "Id", "Name", course.CourseTypeID);
 			return View(course);
 		}
+
+		[HttpGet]
+		public async Task<IActionResult> Edit(int Id)
+		{
+			var course = await _context.Courses.Where(x => x.Id == Id)
+				.Include(x => x.Department)
+				.Include(x => x.CourseType)
+				.FirstOrDefaultAsync();
+            ViewData["DepartmentID"] = new SelectList(_context.Departments, "Id", "Name", course.DepartmentID);
+            ViewData["CourseTypeID"] = new SelectList(_context.CourseTypes, "Id", "Name", course.CourseTypeID);
+            return View(course);
+            
+        }
+
+		
 	}
 }

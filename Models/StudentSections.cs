@@ -9,7 +9,7 @@ namespace SmartUni.Models
         [ForeignKey(nameof(StudentId))]
         public virtual Student? Student { get; set; }
         public int? SectionId { get; set;}
-        [ForeignKey(nameof(SectionId))]
+        [ForeignKey(nameof(SectionId))] 
         public virtual Sections? Sections { get; set; }
         public int? CourseId { get; set; }
         [ForeignKey(nameof(CourseId))]

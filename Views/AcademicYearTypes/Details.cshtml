@@ -1,15 +1,25 @@
 ﻿@model SmartUni.Models.AcademicYearType
-
+@inject ApplicationDbContext _context
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    var academicSemesters = await _context.AcademicSemesters
+                            .Where(a => a.AcademicYearId == Model.Id)
+                            .Include(x=>x.SemesterType)
+                            .ToListAsync();
+    int count = 1;
+    var semester = new SelectList(_context.SemesterTypes,"Id","Name");
+    ViewDataDictionary selectList = new ViewDataDictionary(ViewData)
+    {
+        {"SemesterId",semester},
+    };
 }
 <div class="container">
     <div class="card">
         <div class="card-header">
             <h4>Details (Academic Year Type)</h4>
         </div>
-        <div class="card-body text-light" style="background:darkblue;">
+        <div class="card-body">
             <div class="container">
                 <dl class="row">
                     <dt class="col-sm-6">
@@ -57,6 +67,43 @@
                     <a asp-action="Index" class="btn btn-primary">Back to List</a>
                 </div>
             }
+        </div>
+    </div>
+    <br />
+    <div class="card">
+        <div class="card-header">Academic Semester</div>
+        <div class="card-body">
+            @await Html.PartialAsync("~/Views/AcademicSemesters/Create.cshtml",new AcademicSemester(){ AcademicYearId = Model.Id }, selectList)<br /><br />
+            <div class="table-responsive">
+                <table class="table table-striped" id="dataTable">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Semester</th>
+                            <th>StartDate</th>
+                            <th>EndDate</th>
+                            <th>IsActive</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in academicSemesters)
+                        {
+                            <tr>
+                                <td>@count</td>
+                                <td>@item.SemesterType.Name</td>
+                                <td>@item.StartDate</td>
+                                <td>@item.EndDate</td>
+                                <td>@item.IsActive</td>
+                                <td>
+                                    <a asp-route-Id="@item.Id" asp-action="Edit" asp-controller="AcademicSemester" class="btn btn-warning">Edit</a> |
+                                    <a asp-route-Id="@item.Id" asp-action="Delete" asp-controller="AcademicSemester" class="btn btn-danger">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

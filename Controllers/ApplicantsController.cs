@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SmartUni.Data;
 using SmartUni.Filters;
@@ -10,9 +11,11 @@ namespace SmartUni.Controllers
     public class ApplicantsController : Controller
     {
         private readonly ApplicationDbContext _context;
-        public ApplicantsController(ApplicationDbContext context)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public ApplicantsController(ApplicationDbContext context,UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
         public async Task<IActionResult> Index()
         {
@@ -52,6 +55,7 @@ namespace SmartUni.Controllers
 			TempData["Message"] = "Referee doesn't exist";
 			return RedirectToAction("Details", new { id = applicantId });
 		}
+
         //Method to Approve Referee
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -70,7 +74,7 @@ namespace SmartUni.Controllers
             TempData["Message"] = "Referee doesn't exist";
             return RedirectToAction("Details", new { id = applicantId });
         }
-
+        //Approve Applicant Post Method
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> ApproveApplicant(int applicantId)
@@ -78,8 +82,13 @@ namespace SmartUni.Controllers
             var applicant = await _context.EntranceApplicants.Where(x => x.Id == applicantId).FirstOrDefaultAsync();
             if (applicant != null)
             {
+
 				var status = await _context.StatusTypes.Where(s => s.Name.Contains("Approved")).FirstOrDefaultAsync();
                 applicant.StatusID = status.Id;
+                //var studentIdentityUser = new ApplicationUser()
+                //{
+                    
+                //};
                 _context.EntranceApplicants.Update(applicant);
                 await _context.SaveChangesAsync();
 				TempData["Message"] = "Applicant was approved!";

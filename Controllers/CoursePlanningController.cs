@@ -8,29 +8,24 @@ using System.Security.Claims;
 
 namespace SmartUni.Controllers
 {
-    public class CoursePlanning : Controller
+    public class CoursePlanningController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<ApplicationUser> _userManager;
 
-        public CoursePlanning(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
+        public CoursePlanningController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _userManager = userManager;
         }
 
 
-        public IActionResult Index(string? search)
+        public IActionResult Index(string? keyword)
         {
-            if (string.IsNullOrEmpty(search))
+            if (!String.IsNullOrEmpty(keyword))
             {
-                int ID = int.Parse(search);
-                var student = _context.Students.Where(x => x.StudentId == ID).FirstOrDefault();
-
-                if (student != null)
-                {
-                    return View(student);
-                }
+                var student = _context.Students.FirstOrDefault(x => x.StudentId.Equals(Convert.ToInt64(keyword)));
+                return View(student);
             }
             return View();
         }
@@ -64,7 +59,6 @@ namespace SmartUni.Controllers
 
                 if (student != null)
                 {
-
                 }
 
 
