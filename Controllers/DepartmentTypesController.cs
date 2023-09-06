@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SmartUni.Data;
+using SmartUni.Models;
 
 namespace SmartUni.Controllers
 {
@@ -15,6 +16,22 @@ namespace SmartUni.Controllers
         {
             var departmenttypes = await _context.DepartmentTypes.ToListAsync();
             return View(departmenttypes);
+        }
+        public IActionResult Create()
+        {
+            return View();
+        }
+        public async Task<IActionResult> Create(DepartmentType departmenttype)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.DepartmentTypes.Add(departmenttype);
+                await _context.SaveChangesAsync();
+                TempData["Message"] = "Department Type created successfully";
+                return RedirectToAction("Index");
+            }
+            TempData["Message"] = "Error creating department type";
+            return View();
         }
     }
 }

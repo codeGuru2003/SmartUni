@@ -75,44 +75,13 @@ namespace SmartUni.Controllers
                 TempData["RecordSavedMessage"] = "The record has been saved.";
                 return RedirectToAction("EducationalBackground", "Student", new { studentId1 = student.Id });
 
-            }
-            ViewData["TitleTypeId"] = new SelectList(_context.TitleTypes, "Id", "Name", student.TitleID);
-            ViewData["GenderId"] = new SelectList(_context.Genders, "Id", "Name", student.GenderID);
-            ViewData["NationalityId"] = new SelectList(_context.NationalityTypes, "Id", "Name", student.NationalityID);
-            ViewData["CountryId"] = new SelectList(_context.CountryTypes, "Id", "Name", student.CountryID);
-            ViewData["ReligionId"] = new SelectList(_context.ReligionTypes, "Id", "Name", student.ReligionID);
-            ViewData["MaritalStatusId"] = new SelectList(_context.MaritalStatusTypes, "Id", "Name", student.MaritalStatusID);
-            ViewData["OccupationId"] = new SelectList(_context.OccupationTypes, "Id", "Name", student.OccupationID);
-            ViewData["RelationshipId"] = new SelectList(_context.RelationshipTypes, "Id", "Name", student.RelationshipTypeID);
-            ViewData["DisabilityId"] = new SelectList(_context.DisabilityTypes, "Id", "Name", student.DisabilityTypeID);
-            TempData["Error"] = "Could not execute task";
-            return View();
-
 		}
 
-
-		public async Task<IActionResult> EducationalBackground(int? studentId1)
+		public IActionResult ManagePlanning(string? keyword)
 		{
-			if (studentId1 == null)
+			if (!String.IsNullOrEmpty(keyword))
 			{
-				return RedirectToAction("Biodata");
-			}
-			var country = _context.CountryTypes.ToList();
-			var selectList = new List<SelectListItem>
-			{
-				new SelectListItem { Value = null, Text = "------ Select Country --------" }
-			};
-			selectList.AddRange(country.Select(x => new SelectListItem
-			{
-				Value = x.Id.ToString(),
-				Text = x.Name,
-			}));
-
-			var student = await _context.Students.Where(x => x.Id == studentId1).FirstOrDefaultAsync();
-			if (student != null)
-			{
-				ViewData["CountryId"] = selectList;
-				ViewData["AddstudentId"] = studentId1;
+                var student = _context.Students.FirstOrDefault(x => x.StudentId.Equals(Convert.ToInt64(keyword)));
                 return View(student);
 			}
 			ViewData["AddstudentId"] = studentId1;

@@ -1474,6 +1474,12 @@ namespace SmartUni.Migrations
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("GenderID")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GroupID")
+                        .HasColumnType("int");
+
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(max)");
 
@@ -1492,6 +1498,9 @@ namespace SmartUni.Migrations
                     b.Property<int>("NationalityID")
                         .HasColumnType("int");
 
+                    b.Property<int>("TitleID")
+                        .HasColumnType("int");
+
                     b.Property<string>("UserID")
                         .HasColumnType("nvarchar(450)");
 
@@ -1501,9 +1510,15 @@ namespace SmartUni.Migrations
 
                     b.HasIndex("FacultyTypeID");
 
+                    b.HasIndex("GenderID");
+
+                    b.HasIndex("GroupID");
+
                     b.HasIndex("MaritalStatusTypeID");
 
                     b.HasIndex("NationalityID");
+
+                    b.HasIndex("TitleID");
 
                     b.HasIndex("UserID");
 
@@ -3075,6 +3090,18 @@ namespace SmartUni.Migrations
                         .WithMany()
                         .HasForeignKey("FacultyTypeID");
 
+                    b.HasOne("SmartUni.Models.GenderType", "GenderType")
+                        .WithMany()
+                        .HasForeignKey("GenderID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SmartUni.Models.Group", "Group")
+                        .WithMany()
+                        .HasForeignKey("GroupID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("SmartUni.Models.MaritalStatusType", "MaritalStatusType")
                         .WithMany()
                         .HasForeignKey("MaritalStatusTypeID")
@@ -3087,6 +3114,12 @@ namespace SmartUni.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("SmartUni.Models.TitleType", "TitleType")
+                        .WithMany()
+                        .HasForeignKey("TitleID")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("SmartUni.Models.ApplicationUser", "User")
                         .WithMany()
                         .HasForeignKey("UserID");
@@ -3095,9 +3128,15 @@ namespace SmartUni.Migrations
 
                     b.Navigation("FacultyType");
 
+                    b.Navigation("GenderType");
+
+                    b.Navigation("Group");
+
                     b.Navigation("MaritalStatusType");
 
                     b.Navigation("Nationality");
+
+                    b.Navigation("TitleType");
 
                     b.Navigation("User");
                 });

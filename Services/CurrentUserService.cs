@@ -9,7 +9,9 @@
         }
         public string GetCurrentUser()
         {
-            return contextAccessor.HttpContext.User.Identity.Name;
-        }
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
+			return contextAccessor.HttpContext.User.Identity.Name;
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
+		}
     }
 }

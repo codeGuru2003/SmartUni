@@ -1,0 +1,148 @@
+﻿@inject ApplicationDbContext _context
+@model EntranceApplicant
+@{
+	var applicantReferences = await _context.EntranceApplicantReferences
+				.Where(x => x.EntranceApplicantID == Model.Id)
+				.ToListAsync();
+	var documents = await _context.EntranceApplicantDocuments
+					.Where(s=>s.EntranceApplicantId == Model.Id)
+					.ToListAsync();
+	ViewData["Title"] = "Details";
+	int count = 1;
+	int num = 1;
+}
+@if (TempData["Message"] != null)
+{
+	<script>
+		alert('@TempData["Message"]');
+		@{
+			TempData.Remove("Message");
+		}
+	</script>
+}
+<div class="container">
+    <div class="card">
+        <div class="card-header">Details (Applicant)</div>
+		<div class="card-body">
+			<div class="container">
+				<div class="row justify-content-center">
+					<div class="col-md-4">
+						<img src="~/applicantsphoto/@Model.ImagePath" width="80%" class="img-thumbnail" />
+						<br /><br />
+						<div class="row">
+							<div class="col-md-6">
+								<div class="">
+									<form asp-action="ApproveApplicant" method="post">
+										<input value="@Model.Id" name="applicantId" type="hidden"/>
+										<button class="btn btn-success form-control">Approve</button>
+									</form>
+								</div>
+							</div>
+							<div class="col-md-6">
+								<div class="text-left">
+									<form>
+										<button class="btn btn-danger">Decline</button>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-8">
+						<p><b>BIO DATA</b></p><hr />
+						<p>Serial: @Model.StudentId</p>
+						<p>Name: @Model.TitleType.Name @Model.FirstName @Model.MiddleName @Model.LastName </p>
+						<p>Date of Birth: @Model.DateofBirth.ToString("yyyy-mm-dd") </p>
+						<p>Gender: @Model.GenderType.Name</p>
+						<p>Address Line 1: @Model.AddressLine1</p>
+						<p>Email Address: @Model.EmailAddress</p>
+						<p>Phone Number: @Model.PhoneNumber</p>
+						<br />
+						<p><b>EDUCATIONAL BACKGROUND</b></p>
+						<hr />
+						<p>High School Attended: @Model.HighSchoolAttendedName</p>
+					</div>				
+				</div>
+			</div>
+		</div>
+    </div>
+	<br />
+	<div class="card">
+		<div class="card-header">Applicant Referees</div>
+		<div class="card-body">
+			<div class="table-responsive">
+				<table class="table table-striped table-bordered nowrap" id="dataTable">
+					<thead>
+						<tr>
+							<th>No.</th>
+							<th>Fullname</th>
+							<th>Institution</th>
+							<th>Position</th>
+							<th>Email</th>
+							<th>Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach (var referee in applicantReferences)
+						{
+							<tr>
+								<td>@count</td>
+								<td>@referee.RefereeName</td>
+								<td>@referee.Institution</td>
+								<td>@referee.Position</td>
+								<td><a href="mailto:@referee.EmailAddress">@referee.EmailAddress</a></td>
+								<td>
+									<div class="row">
+										<div class="col-md-6">
+											<form asp-controller="Applicants" asp-action="ApproveReferee" method="post">
+												<input type="hidden" value="@Model.Id" name="applicantId" />
+												<input type="hidden" value="@referee.Id" name="refereeId" />
+												<button class="btn btn-success">Approve</button>
+											</form>
+										</div>
+										<div class="col-md-6">
+											<form asp-controller="Applicants" asp-action="DeclineReferee" method="post">
+												<input type="hidden" value="@Model.Id" name="applicantId" />
+												<input type="hidden" value="@referee.Id" name="refereeId"/>
+												<button class="btn btn-danger">Decline</button>
+											</form>
+										</div>
+									</div>
+								</td>
+							</tr>
+							count++;
+						}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<br />
+	<div class="card">
+		<div class="card-header">Applicant Documents</div>
+		<div class="card-body">
+			<div class="table-responsive">
+				<table class="table table-striped" id="dataTable">
+					<thead>
+						<tr>
+							<th>No.</th>
+							<th>Document Type</th>
+							<th>File Path</th>
+						</tr>
+					</thead>
+					<tbody>
+						@foreach (var document in documents)
+						{
+							<tr>
+								<td>@num</td>
+								<td>@document.DocumentType.Name</td>
+								<td>@document.FilePath</td>
+							</tr>
+							num++;
+						}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<br />
+</div>

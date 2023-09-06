@@ -18,7 +18,6 @@ namespace SmartUni.Filters
         public void OnActionExecuting(ActionExecutingContext context)
         {
             var current = _context.AcademicSemesters.Where(x=>x.IsActive == true).First();
-
             throw new NotImplementedException();
         }
     }

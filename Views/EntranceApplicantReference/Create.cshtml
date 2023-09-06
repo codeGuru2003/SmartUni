@@ -12,9 +12,10 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form asp-action="Create" asp-controller="EntranceApplicantReference">
+                <form asp-action="Create" asp-controller="EntranceApplicantReferences" method="post">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
+                        <input asp-for="EntranceApplicantID" type="hidden" />
                         <label asp-for="RefereeName" class="control-label"></label>
                         <input asp-for="RefereeName" class="form-control" />
                         <span asp-validation-for="RefereeName" class="text-danger"></span>

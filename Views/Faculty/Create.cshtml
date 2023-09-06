@@ -1,0 +1,133 @@
+﻿@model Faculty
+@{
+    ViewData["Title"] = "Create";
+}
+<div class="container">
+    <div class="card">
+        <div class="card-header">Create Faculty</div>
+        <div class="card-body">
+            <form asp-action="Create" method="post" enctype="multipart/form-data">
+                <div asp-validation-summary="All"></div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <img id="imgPreview" class="card-img" src="#" alt="Image Preview" />
+                    </div>
+                    <div class="col-md-8">
+                        <input class="form-control" type="file" name="photograph" id="photo" required /><br />
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Faculty Type</label>
+                                        @Html.DropDownList("FacultyTypeID", (SelectList)ViewBag.FacultyTypeID, "Select Faculty Type", new { id = "facultytype", @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="GroupID">Group Name</label>
+                                        @Html.DropDownList("GroupID", (SelectList)ViewBag.GroupID, "Select Group", new { id = "group", @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Department</label>
+                                        @Html.DropDownList("DepartmentID", (SelectList)ViewBag.DepartmentID, "Select Department", new { id = "department", @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Title</label>
+                                        @Html.DropDownList("TitleID", (SelectList)ViewBag.TitleID, "Select Title", new { id = "title", @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>First Name</label>
+                                        <input asp-for="FirstName" class="form-control" required />
+                                        <span asp-validation-for="FirstName"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Middle Name</label>
+                                        <input asp-for="MiddleName" class="form-control"  />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Last Name</label>
+                                        <input asp-for="LastName" class="form-control" required />
+                                        <span asp-validation-for="LastName"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Phone Number</label>
+                                        <input name="number" class="form-control" required />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label asp-for="GenderID">Gender</label>
+                                        @Html.DropDownList("GenderID", (SelectList)ViewBag.GenderID, "Select Gender", new { id = "gender", @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Marital Status</label>
+                                        @Html.DropDownList("MaritalStatusTypeID", (SelectList)ViewBag.MaritalStatusTypeID, "Select Marital Status", new { id = "maritalstatus", @class = "form-control" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Nationality</label>
+                                        @Html.DropDownList("NationalityID", (SelectList)ViewBag.NationalityID, "Select Nationality", new { id = "nationality", @class = "form-control" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label>Email</label>
+                                        <input name="email" class="form-control" />
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <button class="btn btn-success">Save</button> |
+                                        <a asp-action="Index" class="btn btn-primary">Back to List</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<br /><br />
+<script type="text/javascript">
+    $(document).ready(() => {
+        $('#photo').change(function () {
+            const file = this.files[0];
+            console.log(file);
+            if (file) {
+                let reader = new FileReader();
+                reader.onload = function (event) {
+                    console.log(event.target.result);
+                    $('#imgPreview').attr('src', event.target.result);
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+    });
+</script>

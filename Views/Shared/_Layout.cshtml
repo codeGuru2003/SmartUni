@@ -16,7 +16,7 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
-<body id="page-top">
+<body id="page-top" class="bg-light">
 
     <nav class="navbar navbar-expand navbar-dark static-top" style="background-color:darkblue;">
 
@@ -101,6 +101,7 @@
                 <div class="dropdown-menu" aria-labelledby="pagesDropdown">
                     <h6 class="dropdown-header">ADMISSION TASKS</h6>
                     <a class="dropdown-item" asp-action="Index" asp-controller="Tokens">Manage Voucher</a>
+                    <a class="dropdown-item" asp-action="Index" asp-controller="Applicants">Manage Applicants</a>
                     <a class="dropdown-item" href="register.html">Print Voucher</a>
                 </div>
             </li>
@@ -113,6 +114,7 @@
                 <div class="dropdown-menu" aria-labelledby="pagesDropdown">
                     <h6 class="dropdown-header">STUDENT TASKS</h6>
                     <a class="dropdown-item" asp-action="Index" asp-controller="Student">Manage Student</a>
+                    <a class="dropdown-item" asp-action="Index" asp-controller="CoursePlanning">Manage Planning</a>
                     <h6 class="dropdown-header">REPORT TASKS</h6>
                     <a class="dropdown-item" href="register.html">Bulk Gradesheet</a>
                     <a class="dropdown-item" href="forgot-password.html">Registered Student</a>
@@ -127,7 +129,7 @@
                 <!-- MENUS FOR ITEMS -->
                 <div class="dropdown-menu" aria-labelledby="pagesDropdown">
                     <h6 class="dropdown-header">FACULTY TASKS</h6>
-                    <a class="dropdown-item" asp-action="Index" asp-controller="Tokens">Manage Faculty</a>
+                    <a class="dropdown-item" asp-action="Index" asp-controller="Faculty">Manage Faculty</a>
                     <h6 class="dropdown-header">GRADE INPUT TASKS</h6>
                     <a class="dropdown-item" asp-action="Index" asp-controller="Tokens">Class Listing</a>
                     <a class="dropdown-item" asp-action="Index" asp-controller="Tokens">Grade Input</a>
@@ -209,21 +211,30 @@
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="pagesDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <i class="fas fa-fw fa-folder"></i>
+                    <i class="fas fa-cog"></i>
                     <span>Settings</span>
                 </a>
                 <!-- MENUS FOR ITEMS -->
                 <div class="dropdown-menu" aria-labelledby="pagesDropdown">
                     <h6 class="dropdown-header">Setup School</h6>
-                    <a class="dropdown-item" asp-action="Index" asp-controller="Colleges">Manage Colleges</a>
+                    <a class="dropdown-item" asp-action="Index" asp-controller="AcademicSemesters">Academic Semesters</a>
+                    <a class="dropdown-item" asp-action="Index" asp-controller="Colleges">Colleges</a>
+                    <a class="dropdown-item" asp-action="Index" asp-controller="Courses">Courses</a>
+                    <a class="dropdown-item" asp-action="Index" asp-controller="Sections">Sections</a>
                     <div class="dropdown-divider"></div>
                     <h6 class="dropdown-header">Type Tables</h6>
-                    <a class="dropdown-item" asp-action="Index" asp-controller="CollegeTypes">College Types</a>
-                    <a class="dropdown-item" asp-action="Index" asp-controller="DepartmentTypes">Department Types</a>
                     <a class="dropdown-item" asp-action="Index" asp-controller="AcademicYearTypes">Academic Year Type</a>
+                    <a class="dropdown-item" asp-action="Index" asp-controller="CollegeTypes">College Types</a>
+                    <a class="dropdown-item" asp-action="Index" asp-controller="CourseTypes">Course Types</a>
+                    <a class="dropdown-item" asp-action="Index" asp-controller="DepartmentTypes">Department Types</a>
+                    <a class="dropdown-item" asp-action="Index" asp-controller="FacultyType">Faculty Type</a>
+                    <a class="dropdown-item" asp-action="Index" asp-controller="GenderTypes">Gender Type</a>
                     <a class="dropdown-item" asp-action="Index" asp-controller="MaritalStatusTypes">Marital Status Type</a>
                     <a class="dropdown-item" asp-action="Index" asp-controller="NationalityTypes">Nationality Type</a>
                     <a class="dropdown-item" asp-action="Index" asp-controller="OccupationTypes">Occupation Type</a>
+                    <a class="dropdown-item" asp-action="Index" asp-controller="StatusTypes">Status Type</a>
+                    <a class="dropdown-item" asp-action="Index" asp-controller="SemesterTypes">Semester Type</a>
+                    <a class="dropdown-item" asp-action="Index" asp-controller="SectionTypes">Section Type</a>
                     <a class="dropdown-item" asp-action="Index" asp-controller="ReligionTypes">Religion Type</a>
                     <a class="dropdown-item" asp-action="Index" asp-controller="TitleTypes">Title Type</a>
                     <div class="dropdown-divider"></div>
@@ -253,9 +264,6 @@
         </footer>
 
     </div>
-    <!-- /.content-wrapper -->
-    <!-- /#wrapper -->
-    <!-- Scroll to Top Button-->
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
@@ -278,22 +286,12 @@
             </div>
         </div>
     </div>
-
-    <!-- Bootstrap core JavaScript-->
     <script src="~/vendor/jquery/jquery.min.js"></script>
-    <script src="~/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Core plugin JavaScript-->
+    <script src="~/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>    
     <script src="~/vendor/jquery-easing/jquery.easing.min.js"></script>
-
-    <!-- Page level plugin JavaScript-->
     <script src="~/vendor/datatables/jquery.dataTables.js"></script>
     <script src="~/vendor/datatables/dataTables.bootstrap4.js"></script>
-
-    <!-- Custom scripts for all pages-->
     <script src="~/js/sb-admin.min.js"></script>
-
-    <!-- Demo scripts for this page-->
     <script src="~/js/demo/datatables-demo.js"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

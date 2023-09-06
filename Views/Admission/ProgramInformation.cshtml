@@ -3,63 +3,192 @@
 	Layout = "~/Views/Admission/_AdmissionLayout.cshtml";
 	ViewData["Title"] = "Program Information";
 }
-<div class="container">
-	<div class="card">
-		@if (TempData["RecordSavedMessage"] != null)
-		{
-			<script>
-				alert('@TempData["RecordSavedMessage"]');
-				@{
-					TempData.Remove("RecordSavedMessage");
-				}
-			</script>
-		}
-		<div class="card-header">
-			<p>PROGRAMME INFROMATION</p>
-			<p><span class="text-danger"><b>NOTE</b></span>: ALL FIELDS MARK * ARE REQUIRED</p>
-		</div>
-		<div class="card-body">
-			<div class="form">
-				<form asp-action="Biodata" asp-controller="Admission">
-					<p style="color:darkblue"><b>ENTRY YEAR AND OFFERING TYPE</b></p><hr />
-					<div class="row">
-						<div class="col-md-4">
-							<div class="form-group">
-								<label asp-for="FirstName" class="form-label">Offering Type<span class="text-danger"> *</span></label>
-								@Html.DropDownList("OfferingTypeId", (SelectList)ViewBag.OfferingTypeId, "Select Offering Type", new { @class = "form-control" })
+@if (TempData["Status"] == "Approved")
+{
+	<div class="container">
+		<div class="card">
+			@if (TempData["RecordSavedMessage"] != null)
+			{
+				<script>
+					alert('@TempData["RecordSavedMessage"]');
+					@{
+						TempData.Remove("RecordSavedMessage");
+					}
+				</script>
+			}
+			<div class="card-header">
+				<p>PROGRAMME INFROMATION</p>
+				<p><span class="text-danger"><b>NOTE</b></span>: ALL FIELDS MARK * ARE REQUIRED</p>
+			</div>
+			<div class="card-body">
+				<div class="form">
+					<form asp-action="ProgramInformation" asp-controller="Admission" method="post">
+						<p style="color:darkblue"><b>ENTRY YEAR AND OFFERING TYPE</b></p><hr />
+						<div class="row">
+							<div class="col-md-4">
+								<div class="form-group">
+									<label asp-for="FirstName" class="form-label">Offering Type<span class="text-danger"> *</span></label>
+									<select asp-items="ViewBag.OfferingTypeId" class="form-control" disabled asp-for="OfferingTypeID"></select>
+									@*@Html.DropDownList("OfferingTypeId", (SelectList)ViewBag.OfferingTypeId, "Select Offering Type", new { @class = "form-control" })*@
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label asp-for="CollegeID" class="form-label">College of Choice<span class="text-danger"> *</span></label>
+									<select asp-items="ViewBag.CollegeID" class="form-control" disabled asp-for="CollegeID"></select>
+									@*@Html.DropDownList("CollegeID", (SelectList)ViewBag.CollegeID, "Select College", new { id = "college", @class = "form-control" })*@
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label asp-for="DepartmentID" class="form-label">Department of Choice<span class="text-danger"> *</span></label>
+									<select id="department" class="form-control" name="DepartmentId" disabled></select>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label asp-for="DepartmentDegreeID" class="form-label">Degree of Choice<span class="text-danger"> *</span></label>
+									<select id="degree" class="form-control" name="DegreeId" disabled></select>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label asp-for="EntryYear" class="form-label">Entry Year<span class="text-danger"> *</span></label>
+									<input asp-for=EntryYear class="form-control" disabled />
+								</div>
 							</div>
 						</div>
-						<div class="col-md-4">
-							<div class="form-group">
-								<label asp-for="FirstName" class="form-label">Degree of Choice<span class="text-danger"> *</span></label>
-								<input asp-for=MiddleName class="form-control" required />
+						<div class="row">
+							<div class="col-md-4">
+								<div class="form-group">
+									<label asp-for="Scholarship" class="form-label">State the scholarship you hold or expect to hold or how would you finance your study at the university<span class="text-danger"> *</span></label>
+									<input asp-for=Scholarship class="form-control" disabled />
+								</div>
+							</div>
+							<div class="col-md-4">
+							</div>
+							<div class="col-md-4">
 							</div>
 						</div>
-						<div class="col-md-4">
-							<div class="form-group">
-								<label asp-for="FirstName" class="form-label">Entry Year<span class="text-danger"> *</span></label>
-								<input asp-for=LastName class="form-control" required />
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-4">
-							<div class="form-group">
-								<label asp-for="FirstName" class="form-label">State the scholarship you hold or expect to hold or how would you finance your study at the university<span class="text-danger"> *</span></label>
-								<input asp-for=FirstName class="form-control" required />
-							</div>
-						</div>
-						<div class="col-md-4">
-						</div>
-						<div class="col-md-4">
-						</div>
-					</div>
-					<br />
-					<a class="btn btn-danger text-light" asp-action="Biodata">Previous</a>
-					<button class="btn btn-success">Save and Continue</button>
-				</form>
+						<br />
+						<a class="btn btn-danger text-light" asp-action="Biodata">Previous</a>
+						<button class="btn btn-success" disabled>Save and Continue</button>
+					</form>
+				</div>
 			</div>
 		</div>
+		<br />
 	</div>
-	<br />
-</div>
+}
+else
+{
+	<div class="container">
+		<div class="card">
+			@if (TempData["RecordSavedMessage"] != null)
+			{
+				<script>
+					alert('@TempData["RecordSavedMessage"]');
+					@{
+						TempData.Remove("RecordSavedMessage");
+					}
+				</script>
+			}
+			<div class="card-header">
+				<p>PROGRAMME INFROMATION</p>
+				<p><span class="text-danger"><b>NOTE</b></span>: ALL FIELDS MARK * ARE REQUIRED</p>
+			</div>
+			<div class="card-body">
+				<div class="form">
+					<form asp-action="ProgramInformation" asp-controller="Admission" method="post">
+						<p style="color:darkblue"><b>ENTRY YEAR AND OFFERING TYPE</b></p><hr />
+						<div class="row">
+							<div class="col-md-4">
+								<div class="form-group">
+									<label asp-for="FirstName" class="form-label">Offering Type<span class="text-danger"> *</span></label>
+									@Html.DropDownList("OfferingTypeId", (SelectList)ViewBag.OfferingTypeId, "Select Offering Type", new { @class = "form-control" })
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label asp-for="FirstName" class="form-label">College of Choice<span class="text-danger"> *</span></label>
+									@Html.DropDownList("CollegeID", (SelectList)ViewBag.CollegeID, "Select College", new { id = "college", @class = "form-control" })
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label asp-for="DepartmentID" class="form-label">Department of Choice<span class="text-danger"> *</span></label>
+									<select id="department" class="form-control" name="DepartmentId" required></select>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label asp-for="DepartmentDegreeID" class="form-label">Degree of Choice<span class="text-danger"> *</span></label>
+									<select id="degree" class="form-control" name="DegreeId" required></select>
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label asp-for="EntryYear" class="form-label">Entry Year<span class="text-danger"> *</span></label>
+									<input asp-for=EntryYear class="form-control" required />
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-4">
+								<div class="form-group">
+									<label asp-for="Scholarship" class="form-label">State the scholarship you hold or expect to hold or how would you finance your study at the university<span class="text-danger"> *</span></label>
+									<input asp-for=Scholarship class="form-control" required />
+								</div>
+							</div>
+							<div class="col-md-4">
+							</div>
+							<div class="col-md-4">
+							</div>
+						</div>
+						<br />
+						<a class="btn btn-danger text-light" asp-action="Biodata">Previous</a>
+						<button class="btn btn-success">Save and Continue</button>
+					</form>
+				</div>
+			</div>
+		</div>
+		<br />
+	</div>
+}
+<script type="text/javascript">
+		$(document).ready(function () {
+			$("#college").change(function () {
+				var collegeId = $(this).val();
+				loadDepartments(collegeId);
+			});
+
+			$("#department").change(function () {
+				var departmentId = $(this).val();
+				loadDegrees(departmentId);
+			});
+		});
+
+	function loadDepartments(collegeId) {
+		$("#department").empty();
+		if (collegeId) {
+			$.getJSON("/Admission/GetDepartments?collegeId=" + collegeId, function (data) {
+				$.each(data, function (index, department) {
+					$("#department").append($('<option>').text(department.text).attr('value', department.value));
+				});
+				// Trigger change event to load degrees when departments change
+				$("#department").trigger("change");
+			});
+		}
+	}
+
+	function loadDegrees(departmentId) {
+		$("#degree").empty();
+		if (departmentId) {
+			$.getJSON("/Admission/GetDegrees?departmentId=" + departmentId, function (data) {
+				$.each(data, function (index, degree) {
+					$("#degree").append($('<option>').text(degree.text).attr('value', degree.value));
+				});
+			});
+		}
+	}
+</script>

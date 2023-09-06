@@ -1,0 +1,47 @@
+﻿@model IEnumerable<Faculty>
+@{
+    ViewData["Title"] = "Index";
+    int count = 1;
+}
+<div class="container">
+    <a class="btn btn-primary" asp-action="Create">Create</a><br /><br />
+    <div class="card">
+        <div class="card-header">List of Faculties</div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped nowrap" id="dataTable"> 
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Faculty Type</th>
+                            <th>Fullname</th>
+                            <th>Gender</th>
+                            <th>Nationality</th>
+                            <th>Marital Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach(var item in Model)
+                        {
+                            <tr>
+                                <td>@count</td>
+                                <td>@item.FacultyType.Name</td>
+                                <td>@item.TitleType.Name @item.FirstName @item.MiddleName @item.LastName</td>
+                                <td>@item.GenderType.Name</td>
+                                <td>@item.Nationality.Name</td>
+                                <td>@item.MaritalStatusType.Name</td>
+                                <td>
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Edit</a> |
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-primary">Details</a> |
+                                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                                </td>
+                            </tr>
+                            count++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

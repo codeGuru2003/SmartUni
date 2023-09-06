@@ -1,16 +1,47 @@
-﻿@{
-	Layout = null;
-	ViewData["Title"] = "";
+﻿@model Student
+@{
+    ViewData["Title"] = "Index";
+    int count = 1;
 }
-
-
-<div>
-	<form asp-action="Index" asp-controller="CourePlanning" method="get">
-		<input type="text" />
-	</form>
-
-@*	@{
-		if (stued)
-	}*@
+<div class="container">
+    <div class="card">
+        <div class="card-header">Student Planning</div>
+        <div class="card-body">
+            <div class="col-md-4">
+                <form>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input class="form-control" name="keyword" placeholder="Student ID" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <button class="btn btn-primary">Search</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped ">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Fullname</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if(Model != null)
+                        {
+                            <tr>
+                                <td>@count</td>
+                                <td>@Model.LastName @Model.MiddleName @Model.FirstName</td>
+                                <td></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 </div>
-

@@ -1,0 +1,40 @@
+﻿@model IEnumerable<SectionType>
+@{
+    ViewData["Title"] = "Index";
+    int count = 1;
+}
+<div class="container">
+    <p>
+        @await Html.PartialAsync("~/Views/SectionTypes/Create.cshtml", new SectionType())
+    </p>
+    <div class="card">
+        <div class="card-header">List of Section Types</div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped" id="dataTable">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Name</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach(var item in Model){
+                            <tr>
+                                <td>@count</td>
+                                <td>@item.Name</td>
+                                <td>
+                                    <a asp-route-id="@item.Id" asp-action="Edit" class="btn btn-warning">Edit</a> |
+                                    <a asp-route-id="@item.Id" asp-action="Details" class="btn btn-primary">Details</a> |
+                                    <a asp-route-id="@item.Id" asp-action="Delete" class="btn btn-danger">Delete</a>
+                                </td>
+                            </tr>
+                            count++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

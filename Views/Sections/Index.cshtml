@@ -1,0 +1,40 @@
+﻿@model IEnumerable<Sections>
+@{
+    ViewData["Title"] = "Index";
+    int count = 1;
+}
+<div class="container">
+    <a asp-action="Create" class="btn btn-primary">Create</a><br /><br />
+    <div class="card">
+        <div class="card-header">List of Sections</div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped nowrap" id="dataTable">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Course Name</th>
+                            <th>Section Type</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@count</td>
+                                <td>@item.Course.CourseName</td>
+                                <td>@item.SectionType.Name</td>
+                                <td>
+                                    <a class="btn btn-warning" asp-route-Id="@item.Id">Edit</a> |
+                                    <a class="btn btn-primary" asp-route-Id="@item.Id">Details</a> |
+                                    <a class="btn btn-danger" asp-route-Id="@item.Id">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

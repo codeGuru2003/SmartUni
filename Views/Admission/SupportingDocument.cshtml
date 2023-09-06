@@ -1,6 +1,24 @@
-﻿@{
-    Layout = "~/Views/Admission/_AdmissionLayout.cshtml";
-    ViewData["Title"] = "Supporting Documents";
+﻿@model EntranceApplicant
+@inject ApplicationDbContext _context;
+@{
+	Layout = "~/Views/Admission/_AdmissionLayout.cshtml";
+	ViewData["Title"] = "Supporting Documents";
+	int count = 1;
+	var unavailableApplicantDocument = await _context.EntranceApplicantDocuments
+	.Where(x => x.EntranceApplicantId == Model.Id)
+	.Select(x => x.DocumentTypeId).ToListAsync();
+	var availableApplicantDocument = await _context.DocumentTypes
+		.Where(x => !unavailableApplicantDocument.Contains(x.Id))
+		.ToListAsync();
+	var entranceApplicantDocuments = await _context.EntranceApplicantDocuments
+		.Include(d=>d.DocumentType)
+		.Where(d=>d.EntranceApplicantId == Model.Id)
+		.ToListAsync();
+	var dropdownlist = new SelectList(availableApplicantDocument, "Id", "Name");
+	ViewDataDictionary selectList = new ViewDataDictionary(ViewData)
+	{
+		{"DocumentTypeId", dropdownlist }
+	};
 }
 <div class="container">
 	<div class="card">
@@ -8,36 +26,32 @@
 			<p>LIST OF SUPPORTING DOCUMENT</p>
 		</div>
 		<div class="card-body">
+			@await Html.PartialAsync("~/Views/Admission/UploadDocument.cshtml", new DocumentUploadViewModel(){ EntranceApplicantId = Model.Id}, selectList)
+			<br /><br />
 			<div class="table-responsive">
 				<table class="table" id="dataTable">
 					<thead>
 						<tr>
 							<th>No.</th>
 							<th>Type of Document</th>
-							<th>Document</th>
 							<th>ACTION</th>
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td>Test</td>
-							<td>Church</td>
-							<td>Pastor</td>
-							<td>Accepted</td>
-						</tr>
-						@*@foreach (var item in Model)
+						@foreach (var item in entranceApplicantDocuments)
 						{
-						<tr>
-						<td>@item.Name</td>
-						<td>@item.Institution</td>
-						<td>@item.Position</td>
-						<td>@item.Email</td>
-						<td>@item.Status_Id</td>
-						<td>
-
-						</td>
-						</tr>
-						}*@
+							<tr>
+								<td>@count</td>
+								<td>@item.DocumentType.Name</td>
+								<td>
+									<form asp-action="DeleteDocument" asp-controller="Admission" method="post">
+										<input type="hidden" value="@item.Id" name="Id" />
+										<button class="btn btn-sm btn-danger">Delete</button>
+									</form>
+								</td>
+							</tr>
+							count++;
+						}
 					</tbody>
 				</table>
 			</div>

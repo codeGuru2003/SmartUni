@@ -22,6 +22,7 @@ namespace SmartUni.Controllers
         // GET: AcademicYearTypes/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            TempData["CollegeID"] = id;
             if (id == null || _context.College == null)
             {
                 return NotFound();

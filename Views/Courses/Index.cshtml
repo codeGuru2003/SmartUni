@@ -1,0 +1,41 @@
+﻿@model IEnumerable<Course>
+@{
+    ViewData["Title"] = "Index";
+    int count = 1;
+}
+<div class="container">
+    <a class="btn btn-primary" asp-action="Create">Create</a><br /><br />
+    <div class="card">
+        <div class="card-header"></div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table" id="dataTable">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Name</th>
+                            <th>Credit Hours</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@count</td>
+                                <td>@item.CourseName</td>
+                                <td>@item.CreditHours</td>
+                                <td>
+                                    <a class="btn btn-warning" asp-route-Id="@item.Id" asp-action="Edit" asp-controller="Courses">Edit</a>
+                                    <a class="btn btn-primary" asp-route-Id="@item.Id" asp-action="Details" asp-controller="Courses">Details</a>
+                                    <a class="btn btn-danger" asp-route-Id="@item.Id" asp-action="Delete" asp-controller="Courses">Delete</a>
+                                </td>
+                            </tr>
+                            count++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
