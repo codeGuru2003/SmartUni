@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SmartUni.Data;
 using SmartUni.Models;
+using SmartUni.Services;
 using SmartUni.ViewModels;
 
 namespace SmartUni.Controllers
@@ -12,34 +13,20 @@ namespace SmartUni.Controllers
 	{
 		private readonly ApplicationDbContext _context;
 		private readonly UserManager<ApplicationUser> _userManager;
+		private readonly IRandomStringGenerator _randomString;
 
-		
-		public StudentController(ApplicationDbContext context, UserManager<ApplicationUser> userManager) 
+
+		public StudentController(ApplicationDbContext context, 
+			UserManager<ApplicationUser> userManager, IRandomStringGenerator randomString) 
 		{ 
 			_context = context;
 			_userManager = userManager;
+			_randomString = randomString;
 		}
 		public async Task<IActionResult> Index()
 		{
 			var students = await _context.Students.ToListAsync();
 			return View(students);
-		}
-		public IActionResult Create()
-		{
-            ViewData["TitleTypeId"] = new SelectList(_context.TitleTypes, "Id", "Name");
-            ViewData["GenderId"] = new SelectList(_context.Genders, "Id", "Name");
-            ViewData["NationalityId"] = new SelectList(_context.NationalityTypes, "Id", "Name");
-            ViewData["CountryId"] = new SelectList(_context.CountryTypes, "Id", "Name");
-            ViewData["ReligionId"] = new SelectList(_context.ReligionTypes, "Id", "Name");
-            ViewData["MaritalStatusId"] = new SelectList(_context.MaritalStatusTypes, "Id", "Name");
-            ViewData["OccupationId"] = new SelectList(_context.OccupationTypes, "Id", "Name");
-            ViewData["RelationshipId"] = new SelectList(_context.RelationshipTypes, "Id", "Name");
-            ViewData["DisabilityId"] = new SelectList(_context.DisabilityTypes, "Id", "Name");
-            return View();
-		}
-		public IActionResult Create(Student student)
-		{
-			return View();
 		}
 		[HttpGet]
 		public IActionResult Biodata()
@@ -68,7 +55,18 @@ namespace SmartUni.Controllers
 					var lastStudentId = await _context.Students.LastAsync();
                     var stID = generateStudentId(lastStudentId);
 					student.StudentId = stID;
-                } 
+                }
+
+
+				var pwd = generatePassword();
+				var appuser = new ApplicationUser
+				{
+					UserName = student.StudentId.ToString(),
+					Email = student.Email,
+					PhoneNumber = student.PhoneNumber,
+				};
+
+				var app_user = _userManager.CreateAsync(appuser, pwd);
                 
                 var status = await _context.StatusTypes.Where(x => x.Name.Contains("Pending")).FirstOrDefaultAsync();
 				student.StatusType = status;
@@ -197,6 +195,16 @@ namespace SmartUni.Controllers
 			}
 			return lastStudentId.StudentId + 1;
 			
+		}
+
+		string generatePassword()
+		{
+			string pwd;
+			var ran1 = _randomString.GenerateRandomString(2);
+			var ran2 = _randomString.GenerateRandomString(2);
+
+			pwd = "P@" + ran1 + "w" + ran2 + "rd";
+			return (pwd);
 		}
 	}
 
