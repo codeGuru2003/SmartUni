@@ -1,95 +1,65 @@
 ﻿@model EntranceApplicant
 @{
-    Layout = null;
+    Layout = "~/Views/Admission/_AdmissionLayout.cshtml";
 }
-<!DOCTYPE html>
-<html lang="en">
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card" style="background:white;">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4"></div>
+                        <div class="col-md-4">
+                            <img src="~/applicantsphoto/@Model.ImagePath" width="90%" class="img-thumbnail" />
 
-<head>
-
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <title>Proof of Application - Elevation</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
-    <link href="~/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="~/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
-    <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-    <link href="~/css/sb-admin.css" rel="stylesheet">
-</head>
-<body class="bg-light">
-	<div class="container">
-		<div class="row">
-            <div class="col-md-12">
-                <div class="card" style="background:white;">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-4"></div>
-                            <div class="col-md-4">
-                                <img src="~/applicantsphoto/@Model.ImagePath" width="90%" class="img-thumbnail" />
-                                
-                            </div>
-                            <div class="col-md-4"></div>
                         </div>
-                        <br /><br />
-                       <div class="container">
-                           <div class="table-responsive">
-                               <table class="table table-striped">
-                                   <tbody>
-                                       <tr>
-                                            <td><p>BIO DATA</p></td>
-                                            <td>
-                                                <p>Serial: @Model.StudentId</p>
-                                                <p>Name: @Model.TitleType.Name @Model.FirstName @Model.MiddleName @Model.LastName </p>
-                                                <p>Date of Birth: @Model.DateofBirth.ToString("yyyy-mm-dd") </p>
-                                                <p>Gender: @Model.GenderType.Name</p>
-                                                <p>Address Line 1: @Model.AddressLine1</p>
-                                                <p>Email Address: @Model.EmailAddress</p>
-                                                <p>Phone Number: @Model.PhoneNumber</p>
-                                            </td>
-                                       </tr>
-                                       <tr>
-                                            <td><p>EDUCATIONAL BACKGROUND</p></td>
-                                            <td>
-                                                <p>High School Attended: @Model.HighSchoolAttendedName</p>
-                                            </td>
-                                       </tr>
-                                       <tr>
-                                           <td>
-                                                <p>PROGRAM INFORMATION</p>
-                                           </td>
-                                           <td>
-                                                <p>Entry Year: @Model.EntryYear</p>
-                                                <p>Degree of Choice: @Model.DepartmentDegree.Name</p>
-                                           </td>
-                                       </tr>
-                                   </tbody>
-                               </table>
-                           </div>
-                       </div>
+                        <div class="col-md-4"></div>
+                    </div>
+                    <br /><br />
+                    <div class="container">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <tbody>
+                                    <tr>
+                                        <td><p>BIO DATA</p></td>
+                                        <td>
+                                            <p>Serial: @Model.StudentId</p>
+                                            <p>Name: @Model.TitleType.Name @Model.FirstName @Model.MiddleName @Model.LastName </p>
+                                            <p>Date of Birth: @Model.DateofBirth.ToString("yyyy-mm-dd") </p>
+                                            <p>Gender: @Model.GenderType.Name</p>
+                                            <p>Address Line 1: @Model.AddressLine1</p>
+                                            <p>Email Address: @Model.EmailAddress</p>
+                                            <p>Phone Number: @Model.PhoneNumber</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><p>EDUCATIONAL BACKGROUND</p></td>
+                                        <td>
+                                            <p>High School Attended: @Model.HighSchoolAttendedName</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <p>PROGRAM INFORMATION</p>
+                                        </td>
+                                        <td>
+                                            <p>Entry Year: @Model.EntryYear</p>
+                                            <p>Degree of Choice: @Model.DepartmentDegree.Name</p>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="text-center">
+                            <form asp-action="ApplicantSummary" method="post" asp-controller="Report">
+                                <input type="hidden" value="@Model.Id" name="Id" />
+                                <button class="btn btn-success">Export</button>
+                            </form>
+                        </div>
                     </div>
                 </div>
             </div>
+            <br /><br />
         </div>
-	</div>
-    <!-- Bootstrap core JavaScript-->
-    @*<script src="~/vendor/jquery/jquery.min.js"></script>*@
-    <script src="~/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-    <!-- Core plugin JavaScript-->
-    <script src="~/vendor/jquery-easing/jquery.easing.min.js"></script>
-
-    <!-- Page level plugin JavaScript-->
-    <script src="~/vendor/datatables/jquery.dataTables.js"></script>
-    <script src="~/vendor/datatables/dataTables.bootstrap4.js"></script>
-
-    <!-- Custom scripts for all pages-->
-    <script src="~/js/sb-admin.min.js"></script>
-
-    <!-- Demo scripts for this page-->
-    <script src="~/js/demo/datatables-demo.js"></script>
-</body>
-
-</html>
+    </div>
+</div>

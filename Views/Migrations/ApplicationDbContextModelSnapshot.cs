@@ -404,6 +404,53 @@ namespace SmartUni.Migrations
                     b.ToTable("BankAccounts");
                 });
 
+            modelBuilder.Entity("SmartUni.Models.BillingItem", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int?>("BillingTypeID")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("CollegeID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("CreatedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<decimal>("CurrencyAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int?>("CurrencyTypeID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ModifiedBy")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("ModifiedOn")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("BillingTypeID");
+
+                    b.HasIndex("CollegeID");
+
+                    b.HasIndex("CurrencyTypeID");
+
+                    b.ToTable("BillingItems");
+                });
+
             modelBuilder.Entity("SmartUni.Models.BillingType", b =>
                 {
                     b.Property<int>("Id")
@@ -580,6 +627,9 @@ namespace SmartUni.Migrations
                     b.Property<bool>("IsLab")
                         .HasColumnType("bit");
 
+                    b.Property<int?>("LevelTypeID")
+                        .HasColumnType("int");
+
                     b.Property<string>("ModifiedBy")
                         .HasColumnType("nvarchar(max)");
 
@@ -591,6 +641,8 @@ namespace SmartUni.Migrations
                     b.HasIndex("CourseTypeID");
 
                     b.HasIndex("DepartmentID");
+
+                    b.HasIndex("LevelTypeID");
 
                     b.ToTable("Courses");
                 });
@@ -2742,6 +2794,27 @@ namespace SmartUni.Migrations
                     b.Navigation("CurrencyType");
                 });
 
+            modelBuilder.Entity("SmartUni.Models.BillingItem", b =>
+                {
+                    b.HasOne("SmartUni.Models.BillingType", "BillingType")
+                        .WithMany()
+                        .HasForeignKey("BillingTypeID");
+
+                    b.HasOne("SmartUni.Models.CollegeType", "CollegeType")
+                        .WithMany()
+                        .HasForeignKey("CollegeID");
+
+                    b.HasOne("SmartUni.Models.CurrencyType", "CurrencyType")
+                        .WithMany()
+                        .HasForeignKey("CurrencyTypeID");
+
+                    b.Navigation("BillingType");
+
+                    b.Navigation("CollegeType");
+
+                    b.Navigation("CurrencyType");
+                });
+
             modelBuilder.Entity("SmartUni.Models.College", b =>
                 {
                     b.HasOne("SmartUni.Models.CollegeType", "CollegeType")
@@ -2765,9 +2838,15 @@ namespace SmartUni.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("SmartUni.Models.LevelType", "LevelType")
+                        .WithMany()
+                        .HasForeignKey("LevelTypeID");
+
                     b.Navigation("CourseType");
 
                     b.Navigation("Department");
+
+                    b.Navigation("LevelType");
                 });
 
             modelBuilder.Entity("SmartUni.Models.CourseBill", b =>

@@ -3,7 +3,7 @@
 	Layout = "~/Views/Admission/_AdmissionLayout.cshtml";
 	ViewData["Title"] = "Educational Background";
 }
-@if (TempData["Status"] == "Approved")
+@if (Model.StatusType.Name.Contains("Approved"))
 {
 	<div class="container">
 		<div class="card">

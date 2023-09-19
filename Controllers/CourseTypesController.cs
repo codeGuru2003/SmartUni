@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using SmartUni.Data;
 using SmartUni.Models;
+using Syncfusion.EJ2.Grids;
 
 namespace SmartUni.Controllers
 {
@@ -15,6 +16,7 @@ namespace SmartUni.Controllers
         public async Task<IActionResult> Index()
 		{
 			var coursetypes = await _context.CourseTypes.ToListAsync();
+			ViewBag.CourseTypes = coursetypes;
 			return View(coursetypes);
 		}
 		public IActionResult Create()
@@ -23,6 +25,8 @@ namespace SmartUni.Controllers
 		}
 		public IActionResult Create(CourseType coursetype)
 		{
+			_context.CourseTypes.Add(coursetype);
+			_context.SaveChanges();
 			return View();
 		}
 	}

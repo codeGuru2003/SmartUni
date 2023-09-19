@@ -1,3 +1,4 @@
+using FastReport.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.EntityFrameworkCore;
@@ -9,12 +10,15 @@ using SmartUni.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 Syncfusion.Licensing.SyncfusionLicenseProvider.RegisterLicense("Mgo+DSMBMAY9C3t2V1hhQlJAfV5AQmBIYVp/TGpJfl96cVxMZVVBJAtUQF1hSn5bdENjW3pYcnZXR2dU");
+FastReport.Utils.RegisteredObjects.AddConnection(typeof(MsSqlDataConnection));
 // Add services to the container.
 
 var connectionString = builder.Configuration.GetConnectionString("Default");
 builder.Services.AddSingleton<ITempDataProvider, CustomTempDataProvider>();
 builder.Services.AddTransient<ICurrentUserService, CurrentUserService>();
 builder.Services.AddTransient<IRandomStringGenerator, RandomStringGenerator>();
+builder.Services.AddTransient<EMailService, MailService>();
+builder.Services.AddFastReport();
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     {
         options.UseSqlServer(connectionString);
@@ -37,7 +41,7 @@ builder.Services.ConfigureApplicationCookie(options =>
     options.AccessDeniedPath = "/Account/AccessDenied";    
 
 });
-
+builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 builder.Services.AddControllersWithViews().AddNewtonsoftJson();
 builder.Services.AddRazorPages();
 builder.Services.AddSession();
@@ -108,6 +112,7 @@ if (!app.Environment.IsDevelopment())
 	// The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
 	app.UseHsts();
 }
+app.UseFastReport();
 app.UseSession();
 app.UseHttpsRedirection();
 app.UseStaticFiles();

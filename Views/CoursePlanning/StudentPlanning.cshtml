@@ -1,0 +1,77 @@
+﻿@inject ApplicationDbContext _context
+@model IEnumerable<StudentSections>
+@{
+    ViewData["Title"] = "Student Planning";
+    var courses = new SelectList(_context.Courses, "Id", "CourseName");
+    var sections = new SelectList(_context.Sections, "Id", "DisplayName");
+    
+    ViewDataDictionary viewData = new ViewDataDictionary(ViewData)
+    {
+        {"CourseId",courses},
+    };
+    int count = 1;
+}
+<div class="container">
+    <div class="card">
+        <div class="card-header">List of Student Planned Sections</div>
+       <div class="card-body">
+           @await Html.PartialAsync("~/Views/CoursePlanning/CreateStudentSection.cshtml", new StudentSections(){ StudentId = ViewBag.Student }, viewData) | 
+           <a class="btn btn-success" asp-action="BillStudent" asp-route-Id="@ViewBag.Student"><i class="fas fa-dollar-sign"></i>&nbsp;Bill Student</a><br /><br />
+            <div class="table-responsive">
+                <table class="table table-striped nowrap" id="dataTable">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Course</th>
+                            <th>Section</th>
+                            <th>Schedule</th>
+                            <th>Instructors</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@count</td>
+                                <td>@item.Course.CourseName</td>
+                                <td>@item.Sections.DisplayName</td>
+                                <td>@item.Sections.SectionTime</td>
+                                <td>@item.Sections.Faculty.FirstName @item.Sections.Faculty.MiddleName @item.Sections.Faculty.LastName</td>
+                                <td>@item.StatusTypes.Name</td>
+                                <td>
+                                    @if (item.StatusTypes.Name.Contains("Created"))
+                                    {
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <form asp-action="SubmitSection">
+                                                    <input type="hidden" name="studentSectionId" value="@item.Id" />
+                                                    <button class="btn btn-success"><i class="fas fa-check"></i></button>
+                                                </form>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <form asp-action="DeleteSection">
+                                                    <input type="hidden" name="studentSectionId" value="@item.Id" />
+                                                    <button class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <form asp-action="DeleteSection">
+                                            <input type="hidden" name="studentSectionId" value="@item.Id" />
+                                            <button class="btn btn-danger"><i class="fas fa-trash"></i></button>
+                                        </form>
+                                    }
+                                </td>
+                            </tr>
+                            count++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+       </div>
+    </div>
+</div>

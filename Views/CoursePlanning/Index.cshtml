@@ -36,7 +36,9 @@
                             <tr>
                                 <td>@count</td>
                                 <td>@Model.LastName @Model.MiddleName @Model.FirstName</td>
-                                <td></td>
+                                <td>
+                                    <a asp-action="StudentPlanning" asp-route-Id="@Model.Id" class="btn btn-primary">Proceed</a>
+                                </td>
                             </tr>
                         }
                     </tbody>

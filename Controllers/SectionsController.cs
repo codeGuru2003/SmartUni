@@ -51,8 +51,11 @@ namespace SmartUni.Controllers
         {
             if (ModelState.IsValid)
             {
+                var sectiontype = await _context.SectionTypes.SingleOrDefaultAsync(x => x.Id.Equals(section.SectionTypeId));
                 var academicsemester = await _context.AcademicSemesters.SingleOrDefaultAsync(x=>x.IsActive == true);
                 section.AcademicSemesterId = academicsemester.Id;
+                section.DisplayName = sectiontype.Name;
+                section.Description = sectiontype.Name;
                 _context.Sections.Add(section);
                 await _context.SaveChangesAsync();
                 return RedirectToAction("Index");

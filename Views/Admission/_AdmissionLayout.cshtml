@@ -57,55 +57,55 @@
         <!-- Sidebar -->
         <ul class="sidebar navbar-nav" style="background-color:darkblue;">
             <li class="nav-item @(ViewContext.RouteData.Values["action"].ToString() == "Biodata" ? "active" : "")">
-                <a class="nav-link" asp-action="Biodata">
+                <a class="nav-link" asp-action="Biodata" asp-controller="Admission">
                     <i class="fas fa-user"></i>
                     <span>Biodata</span>
                 </a>
             </li>
             <li class="nav-item @(ViewContext.RouteData.Values["action"].ToString() == "EducationalBackground" ? "active" : "")">
-                <a class="nav-link" asp-action="EducationalBackground">
+                <a class="nav-link" asp-action="EducationalBackground" asp-controller="Admission">
                     <i class="fas fa-book"></i>
                     <span>Educational Background</span>
                 </a>
             </li>
             <li class="nav-item @(ViewContext.RouteData.Values["action"].ToString() == "ProgramInformation" ? "active" : "")">
-                <a class="nav-link" asp-action="ProgramInformation">
+                <a class="nav-link" asp-action="ProgramInformation" asp-controller="Admission">
                     <i class="fas fa-info-circle"></i>
                     <span>Program Information</span>
                 </a>
             </li>
             <li class="nav-item @(ViewContext.RouteData.Values["action"].ToString() == "References" ? "active" : "")">
-                <a class="nav-link" asp-action="References">
+                <a class="nav-link" asp-action="References" asp-controller="Admission">
                     <i class="fas fa-asterisk"></i>
                     <span>List of Reference</span>
                 </a>
             </li>
             <li class="nav-item @(ViewContext.RouteData.Values["action"].ToString() == "SupportingDocument" ? "active" : "")">
-                <a class="nav-link" asp-action="SupportingDocument">
+                <a class="nav-link" asp-action="SupportingDocument" asp-controller="Admission">
                     <i class="fas fa-print"></i>
                     <span>Supporting Documents</span>
                 </a>
             </li>
             <li class="nav-item @(ViewContext.RouteData.Values["action"].ToString() == "UploadPhoto" ? "active" : "")">
-                <a class="nav-link" asp-action="UploadPhoto">
+                <a class="nav-link" asp-action="UploadPhoto" asp-controller="Admission">
                     <i class="fas fa-portrait"></i>
                     <span>Upload Passport Photo</span>
                 </a>
             </li>
             <li class="nav-item @(ViewContext.RouteData.Values["action"].ToString() == "Summary" ? "active" : "")">
-                <a class="nav-link" asp-action="Summary">
+                <a class="nav-link" asp-action="Summary" asp-controller="Admission">
                     <i class="fas fa-paste"></i>
                     <span>Application Summary</span>
                 </a>
             </li>
             <li class="nav-item @(ViewContext.RouteData.Values["action"].ToString() == "ProofOfApplication" ? "active" : "")">
-                <a class="nav-link" asp-action="ProofOfApplication" target="_blank">
+                <a class="nav-link" asp-action="ProofOfApplication" asp-controller="Admission">
                     <i class="fas fa-chalkboard-teacher"></i>
                     <span>Proof of Application</span>
                 </a>
             </li>
             <li class="nav-item @(ViewContext.RouteData.Values["action"].ToString() == "Status" ? "active" : "")">
-                <a class="nav-link" asp-action="Status">
+                <a class="nav-link" asp-action="Status" asp-controller="Admission">
                     <i class="fas fa-signal"></i>
                     <span>Application Status</span>
                 </a>

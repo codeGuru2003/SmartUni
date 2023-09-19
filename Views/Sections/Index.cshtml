@@ -13,8 +13,8 @@
                     <thead>
                         <tr>
                             <th>No.</th>
-                            <th>Course Name</th>
-                            <th>Section Type</th>
+                            <th>Name</th>
+                            <th>Course</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
@@ -23,14 +23,15 @@
                         {
                             <tr>
                                 <td>@count</td>
+                                <td>@item.DisplayName</td>
                                 <td>@item.Course.CourseName</td>
-                                <td>@item.SectionType.Name</td>
                                 <td>
                                     <a class="btn btn-warning" asp-route-Id="@item.Id">Edit</a> |
                                     <a class="btn btn-primary" asp-route-Id="@item.Id">Details</a> |
                                     <a class="btn btn-danger" asp-route-Id="@item.Id">Delete</a>
                                 </td>
                             </tr>
+                            count++;
                         }
                     </tbody>
                 </table>

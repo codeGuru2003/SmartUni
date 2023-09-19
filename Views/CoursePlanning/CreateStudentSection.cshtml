@@ -1,0 +1,53 @@
+﻿@model StudentSections
+
+<button class="btn btn-primary" href="#" data-toggle="modal" data-target="#studentSectionModal">Create New</button>
+<!-- Logout Modal-->
+<div class="modal fade" id="studentSectionModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Create Student Section</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="CreateStudentSection">
+                    <input type="hidden" asp-for="StudentId" />
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Course" class="control-label">Course</label>
+                        @Html.DropDownList("CourseId", (SelectList)ViewBag.CourseId, "Select Course", new { id = "courseId", @class = "form-control" })
+                        <span asp-validation-for="Course" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="SectionId" class="control-label">Section</label>
+                        <select id="section" class="form-control" name="SectionId" required></select>
+                        <span asp-validation-for="Course" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" value="Create" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#courseId").change(function () {
+            var courseId = $(this).val();
+            $("#section").empty();
+            if (courseId) {
+                $.getJSON("/CoursePlanning/GetSections?courseId=" + courseId, function (data) {
+                    $.each(data, function (index, section) {
+                        $("#section").append($('<option>').text(section.text).attr('value', section.value));
+                    });
+                });
+            }
+        });
+    });
+</script>

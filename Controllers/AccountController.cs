@@ -58,6 +58,15 @@ namespace SmartUni.Controllers
                         await _signInManager.UserManager.AddClaimsAsync(user, claims);
                         return RedirectToAction("Index", "Home");
                     }
+					else if (usergroup.Group.Name.Contains("Student"))
+					{
+                        var claims = new[]
+                        {
+                            new Claim("GroupId",$"{ usergroup.Group.Name }")
+                        };
+                        await _signInManager.UserManager.AddClaimsAsync(user, claims);
+                        return RedirectToAction("Default", "Student");
+                    }
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
 				}
 				else

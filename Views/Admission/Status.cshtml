@@ -1,4 +1,72 @@
-﻿@{
+﻿@model EntranceApplicant
+@{
 	Layout = "~/Views/Admission/_AdmissionLayout.cshtml";
 	ViewData["Title"] = "Program Information";
+}
+@if(Model.StatusType.Name.Contains("Approved")){
+	<div class="container">
+		<div class="row">
+			<div class="col-md-3"></div>
+			<div class="col-md-6">
+				<div class="card">
+                    <div class="card-header bg-success text-center">
+                        <img src="~/check.png" width="20%" />
+						<h1><span class="text-light">Congrats!</span></h1>
+					</div>
+					<div class="card-body" style="background-color:white">
+						<div class="text-center">
+							<p>Your application has been approved</p>
+							<p>Contact your dean of college or admission department for your student login credentials</p>
+							<button class="btn btn-success">View Admission Letter</button>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-3"></div>
+		</div>
+	</div>
+}
+else if(Model.StatusType.Name.Contains("Submitted") || Model.StatusType.Name.Contains("Created")){
+	<div class="container">
+		<div class="row">
+			<div class="col-md-3"></div>
+			<div class="col-md-6">
+				<div class="card">
+					<div class="card-header bg-warning text-center">
+						<img src="~/warning.png" width="20%" />
+						<h1><span class="text-light">Pending!</span></h1>
+					</div>
+					<div class="card-body" style="background-color:white">
+						<div class="text-center">
+							<p>Your application is Pending Approval</p>
+							<p>Verify that all your documents and information uploaded are true and correct</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-3"></div>
+		</div>
+	</div>
+}
+else if(Model.StatusType.Name.Contains("Denied")){
+	<div class="container">
+		<div class="row">
+			<div class="col-md-3"></div>
+			<div class="col-md-6">
+				<div class="card">
+					<div class="card-header bg-danger text-center">
+						<img src="~/delete.png" width="20%" />
+						<h1><span class="text-light">Terminated!</span></h1>
+					</div>
+					<div class="card-body" style="background-color:white">
+						<div class="text-center">
+							<p>Your application is has been Denied</p>
+							<p>Kindly contact admission office to inquire reasons.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-3"></div>
+		</div>
+	</div>
 }

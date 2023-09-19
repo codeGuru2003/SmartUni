@@ -55,6 +55,7 @@ namespace SmartUni.Data
         public DbSet<AcademicYearType> AcademicYearTypes { get; set; }
         public DbSet<BankAccount> BankAccounts { get; set; }
         public DbSet<BillingType> BillingTypes { get; set; }
+        public DbSet<BillingItem> BillingItems { get; set; }
         public DbSet<Bank> Banks { get; set; }
         public DbSet<College> College { get; set; }
         public DbSet<CollegeType> CollegeTypes { get; set; }
@@ -153,5 +154,28 @@ namespace SmartUni.Data
 				}
 			}
 		}
-	}
+
+        public DataTable GetEntranceApplicantDetailsById(int applicantId)
+        {
+            var connString = Database.GetConnectionString();
+            using (SqlConnection connection = new SqlConnection(connString))
+            {
+                connection.Open();
+
+                using (SqlCommand command = new SqlCommand("spGetEntranceApplicantDetailsById", connection))
+                {
+                    command.CommandType = CommandType.StoredProcedure;
+                    command.Parameters.Add(new SqlParameter("@applicantId", applicantId));
+
+                    using (SqlDataAdapter adapter = new SqlDataAdapter(command))
+                    {
+                        DataTable dataTable = new DataTable();
+                        adapter.Fill(dataTable);
+                        return dataTable;
+                    }
+                }
+            }
+        }
+
+    }
 }

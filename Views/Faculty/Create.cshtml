@@ -10,10 +10,10 @@
                 <div asp-validation-summary="All"></div>
                 <div class="row">
                     <div class="col-md-4">
-                        <img id="imgPreview" class="card-img" src="#" alt="Image Preview" />
+                        <img id="stPreview" class="card-img" src="#" alt="Image Preview" />
                     </div>
                     <div class="col-md-8">
-                        <input class="form-control" type="file" name="photograph" id="photo" required /><br />
+                        <input class="form-control" type="file" name="photograph" id="picture" required /><br />
                         <div class="container">
                             <div class="row">
                                 <div class="col-md-6">
@@ -117,14 +117,14 @@
 <br /><br />
 <script type="text/javascript">
     $(document).ready(() => {
-        $('#photo').change(function () {
+        $('#picture').change(function () {
             const file = this.files[0];
             console.log(file);
             if (file) {
                 let reader = new FileReader();
                 reader.onload = function (event) {
                     console.log(event.target.result);
-                    $('#imgPreview').attr('src', event.target.result);
+                    $('#stPreview').attr('src', event.target.result);
                 }
                 reader.readAsDataURL(file);
             }

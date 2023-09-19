@@ -3,61 +3,125 @@
 	Layout = "~/Views/Admission/_AdmissionLayout.cshtml";
 	ViewData["Title"] = "Summary";
 }
-<div class="container">
-	<div class="card">
-		<div class="card-header">APPLICATION SUMMARY</div>
-		<div class="card-body">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-4"></div>
-					<div class="col-md-4">
-						<img src="~/applicantsphoto/@Model.ImagePath" width="80%" class="img-thumbnail" />
+@if (Model.StatusType.Name.Contains("Approved"))
+{
+	<div class="container">
+		<div class="card">
+			<div class="card-header">APPLICATION SUMMARY</div>
+			<div class="card-body">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-4"></div>
+						<div class="col-md-4">
+							<img src="~/applicantsphoto/@Model.ImagePath" width="80%" class="img-thumbnail" />
+						</div>
+						<div class="col-md-4"></div>
 					</div>
-					<div class="col-md-4"></div>
-				</div>
-				<hr />
-				<div class="row">
-					<div class="col-md-6">
-						<p>BIO DATA</p>
+					<hr />
+					<div class="row">
+						<div class="col-md-6">
+							<p>BIO DATA</p>
+						</div>
+						<div class="col-md-6">
+							<p>Serial: @Model.StudentId</p>
+							<p>Name: @Model.TitleType.Name @Model.FirstName @Model.MiddleName @Model.LastName </p>
+							<p>Date of Birth: @Model.DateofBirth.ToString("yyyy-mm-dd") </p>
+							<p>Gender: @Model.GenderType.Name</p>
+							<p>Address Line 1: @Model.AddressLine1</p>
+							<p>Email Address: @Model.EmailAddress</p>
+							<p>Phone Number: @Model.PhoneNumber</p>
+						</div>
 					</div>
-					<div class="col-md-6">
-						<p>Serial: @Model.StudentId</p>
-						<p>Name: @Model.TitleType.Name @Model.FirstName @Model.MiddleName @Model.LastName </p>
-						<p>Date of Birth: @Model.DateofBirth.ToString("yyyy-mm-dd") </p>
-						<p>Gender: @Model.GenderType.Name</p>
-						<p>Address Line 1: @Model.AddressLine1</p>
-						<p>Email Address: @Model.EmailAddress</p>
-						<p>Phone Number: @Model.PhoneNumber</p>
+					<hr />
+					<div class="row">
+						<div class="col-md-6">
+							<p>EDUCATIONAL BACKGROUND</p>
+						</div>
+						<div class="col-md-6">
+							<p>High School Attended: @Model.HighSchoolAttendedName</p>
+						</div>
 					</div>
-				</div>
-				<hr />
-				<div class="row">
-					<div class="col-md-6">
-						<p>EDUCATIONAL BACKGROUND</p>
+					<hr />
+					<div class="row">
+						<div class="col-md-6">
+							<p>PROGRAM INFORMATION</p>
+						</div>
+						<div class="col-md-6">
+							<p>Entry Year: @Model.EntryYear</p>
+							<p>Degree of Choice: @Model.DepartmentDegree.Name</p>
+						</div>
 					</div>
-					<div class="col-md-6">
-						<p>High School Attended: @Model.HighSchoolAttendedName</p>
+					<hr />
+					<div class="text-center">
+						<form asp-action="Summary" method="post">
+							<input type="hidden" value="@Model.Id" name="applicantId" />
+							<button disabled class="btn btn-success">Accept & Continue</button>
+						</form>
 					</div>
-				</div>
-				<hr />
-				<div class="row">
-					<div class="col-md-6">
-						<p>PROGRAM INFORMATION</p>
-					</div>
-					<div class="col-md-6">
-						<p>Entry Year: @Model.EntryYear</p>
-						<p>Degree of Choice: @Model.DepartmentDegree.Name</p>
-					</div>
-				</div>
-				<hr />
-				<div class="text-center">
-					<form asp-action="Summary" method="post">
-						<input type="hidden" value="@Model.Id" name="applicantId"/>
-						<button class="btn btn-success">Accept & Continue</button>
-					</form>
 				</div>
 			</div>
 		</div>
+		<br /><br />
 	</div>
-	<br /><br />
-</div>
+}
+else
+{
+	<div class="container">
+		<div class="card">
+			<div class="card-header">APPLICATION SUMMARY</div>
+			<div class="card-body">
+				<div class="container">
+					<div class="row">
+						<div class="col-md-4"></div>
+						<div class="col-md-4">
+							<img src="~/applicantsphoto/@Model.ImagePath" width="80%" class="img-thumbnail" />
+						</div>
+						<div class="col-md-4"></div>
+					</div>
+					<hr />
+					<div class="row">
+						<div class="col-md-6">
+							<p>BIO DATA</p>
+						</div>
+						<div class="col-md-6">
+							<p>Serial: @Model.StudentId</p>
+							<p>Name: @Model.TitleType.Name @Model.FirstName @Model.MiddleName @Model.LastName </p>
+							<p>Date of Birth: @Model.DateofBirth.ToString("yyyy-mm-dd") </p>
+							<p>Gender: @Model.GenderType.Name</p>
+							<p>Address Line 1: @Model.AddressLine1</p>
+							<p>Email Address: @Model.EmailAddress</p>
+							<p>Phone Number: @Model.PhoneNumber</p>
+						</div>
+					</div>
+					<hr />
+					<div class="row">
+						<div class="col-md-6">
+							<p>EDUCATIONAL BACKGROUND</p>
+						</div>
+						<div class="col-md-6">
+							<p>High School Attended: @Model.HighSchoolAttendedName</p>
+						</div>
+					</div>
+					<hr />
+					<div class="row">
+						<div class="col-md-6">
+							<p>PROGRAM INFORMATION</p>
+						</div>
+						<div class="col-md-6">
+							<p>Entry Year: @Model.EntryYear</p>
+							<p>Degree of Choice: @Model.DepartmentDegree.Name</p>
+						</div>
+					</div>
+					<hr />
+					<div class="text-center">
+						<form asp-action="Summary" method="post">
+							<input type="hidden" value="@Model.Id" name="applicantId" />
+							<button class="btn btn-success">Accept & Continue</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+		<br /><br />
+	</div>
+}

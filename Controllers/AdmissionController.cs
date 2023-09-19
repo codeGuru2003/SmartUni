@@ -457,6 +457,7 @@ namespace SmartUni.Controllers
             var check = await _context.EntranceApplicants.Where(x => x.StudentId.Contains(session))
 				.Include(c=>c.DepartmentDegree)
 				.Include(b=>b.GenderType)
+				.Include(a=>a.StatusType)
 				.Include(x=>x.TitleType).FirstOrDefaultAsync();
             return View(check);
         }
@@ -489,9 +490,27 @@ namespace SmartUni.Controllers
 
         [AdmissionFilter]
         [HttpGet]
-        public IActionResult Status()
+        public async Task<IActionResult> Status()
         {
-            return View();
+            var session = HttpContext.Session.GetString("Token");
+            var check = await _context.EntranceApplicants.Where(x => x.StudentId.Contains(session))
+                .Include(c => c.DepartmentDegree)
+				.Include(x=>x.StatusType)
+                .Include(b => b.GenderType)
+                .Include(x => x.TitleType).FirstOrDefaultAsync();
+			if (check.StatusType.Name.Contains("Approved"))
+			{
+				var student = await _context.Students.Where(x=>x.VoucherCode.Contains(check.StudentId))
+					.Include(x=>x.ApplicationUser).Select(s=>s.ApplicationUser).SingleOrDefaultAsync();
+				if (student != null)
+				{
+					ViewData["Username"] = student.UserName;
+					ViewData["Password"] = student.LoginHint;
+                    TempData["Message"] = "Your application was approved";
+                    return View(check);
+                }
+            }
+            return View(check);
         }
 		public async Task<JsonResult> GetDepartments(int collegeId)
 		{
@@ -556,46 +575,35 @@ namespace SmartUni.Controllers
 			await _context.SaveChangesAsync();
 			return RedirectToAction("SupportingDocument");
 		}
-		public async Task<IActionResult> GenerateReport(int studentId)
-		{
-			HtmlToPdfConverter htmlConverter = new HtmlToPdfConverter();
-			var check = await _context.EntranceApplicants.Where(x => x.Id == studentId)
-			   .Include(c => c.DepartmentDegree)
-			   .Include(b => b.GenderType)
-			   .Include(x => x.TitleType).FirstOrDefaultAsync();
-			// HTML string and Base URL
-			string imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "applicantsphoto");
-			string htmlText = "<html><body>" +
-				$"<img src='{imagePath}\\{check.ImagePath}' width='50%' />"+
-				$"<h1 style='font-size:30px;'>Serial: {check.StudentId}</h1>" +
-				$"<h1 style='font-size:30px;'>Name: {check.FirstName} {check.MiddleName} {check.LastName}</h1>" +
-				$"<h1 style='font-size:30px;'>Date of Birth: {check.DateofBirth.ToString("yyyy-mm-dd")}</h1>" +
-				$"<h1 style='font-size:30px;'>Gender: {check.GenderType.Name}</h1>" +
-				$"<h1 style='font-size:30px;'>Address Line: {check.AddressLine1}</h1>" +
-				$"<h1 style='font-size:30px;'>Email Address: {check.EmailAddress}</h1>" +
-				$"<h1 style='font-size:30px;'>Phone Number: {check.PhoneNumber}<hr /></h1>" +
-				$"<h1 style='font-size:30px;'>High School Attended: {check.HighSchoolAttendedName}</h1>" +
-				$"<h1 style='font-size:30px;'>Entry Year: {check.EntryYear}</h1>" +
-				$"<h1 style='font-size:30px;'>Degree of Choice: {check.DepartmentDegree.Name}</h1>" +
-				"</body></html>";
-			string baseUrl = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "css");
-			
-
-			// Convert HTML to PDF
-			PdfDocument document = htmlConverter.Convert(htmlText, baseUrl);
-
-			// Create a memory stream to hold the PDF content
-			MemoryStream memoryStream = new MemoryStream();
-
-			// Save the PDF to the memory stream
-			document.Save(memoryStream);
-			document.Close(true);
-
-			// Set the position of the memory stream to the beginning
-			memoryStream.Seek(0, SeekOrigin.Begin);
-
-			// Return the PDF as a file download
-			return File(memoryStream, "application/pdf", $"{check.FirstName}_{check.MiddleName}_{check.LastName}_{DateTime.Now}.pdf");
-		}
+		//public async Task<IActionResult> GenerateReport(int studentId)
+		//{
+		//	HtmlToPdfConverter htmlConverter = new HtmlToPdfConverter();
+		//	var check = await _context.EntranceApplicants.Where(x => x.Id == studentId)
+		//	   .Include(c => c.DepartmentDegree)
+		//	   .Include(b => b.GenderType)
+		//	   .Include(x => x.TitleType).FirstOrDefaultAsync();
+		//	// HTML string and Base URL
+		//	string imagePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "applicantsphoto");
+		//	string htmlText = "<html><body>" +
+		//		$"<img src='{imagePath}\\{check.ImagePath}' width='50%' />"+
+		//		$"<h1 style='font-size:30px;'>Serial: {check.StudentId}</h1>" +
+		//		$"<h1 style='font-size:30px;'>Name: {check.FirstName} {check.MiddleName} {check.LastName}</h1>" +
+		//		$"<h1 style='font-size:30px;'>Date of Birth: {check.DateofBirth.ToString("yyyy-mm-dd")}</h1>" +
+		//		$"<h1 style='font-size:30px;'>Gender: {check.GenderType.Name}</h1>" +
+		//		$"<h1 style='font-size:30px;'>Address Line: {check.AddressLine1}</h1>" +
+		//		$"<h1 style='font-size:30px;'>Email Address: {check.EmailAddress}</h1>" +
+		//		$"<h1 style='font-size:30px;'>Phone Number: {check.PhoneNumber}<hr /></h1>" +
+		//		$"<h1 style='font-size:30px;'>High School Attended: {check.HighSchoolAttendedName}</h1>" +
+		//		$"<h1 style='font-size:30px;'>Entry Year: {check.EntryYear}</h1>" +
+		//		$"<h1 style='font-size:30px;'>Degree of Choice: {check.DepartmentDegree.Name}</h1>" +
+		//		"</body></html>";
+		//	string baseUrl = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "css");
+		//	PdfDocument document = htmlConverter.Convert(htmlText, baseUrl);
+		//	MemoryStream memoryStream = new MemoryStream();
+		//	document.Save(memoryStream);
+		//	document.Close(true);
+		//	memoryStream.Seek(0, SeekOrigin.Begin);
+		//	return File(memoryStream, "application/pdf", $"{check.FirstName}_{check.MiddleName}_{check.LastName}_{DateTime.Now}.pdf");
+		//}
 	}
 }

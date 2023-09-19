@@ -1,0 +1,64 @@
+﻿@model Sections
+@{
+    ViewData["Title"] = "Edit";
+}
+<div class="container">
+    <div class="card">
+        <div class="card-header">Create Section</div>
+        <div class="card-body">
+            <form asp-action="Create" method="post">
+                <div asp-validation-summary="All"></div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="CourseId">Course</label>
+                                @Html.DropDownList("CourseId", (SelectList)ViewBag.CourseId, "Select Course", new { id = "course", @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="SectionTypeId">Section Type</label>
+                                @Html.DropDownList("SectionTypeId", (SelectList)ViewBag.SectionTypeId, "Select Section Type", new { id = "sectiontype", @class = "form-control" })
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="FacultyId">Faculty</label>
+                                @Html.DropDownList("FacultyId", (SelectList)ViewBag.FacultyId, "Select Faculty", new { id = "faculty", @class = "form-control" })
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="Capacity">Capacity</label>
+                                <input asp-for="Capacity" class="form-control" required />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="Room">Room</label>
+                                <input asp-for="Room" class="form-control" required />
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label asp-for="SectionTime">Days / Time</label>
+                                <input asp-for="SectionTime" class="form-control" required />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <button class="btn btn-success">Update</button> |
+                                <a asp-action="Index" class="btn btn-primary">Back To List</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

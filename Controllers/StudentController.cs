@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SmartUni.Data;
+using SmartUni.Filters;
 using SmartUni.Models;
 using SmartUni.ViewModels;
 
@@ -19,13 +20,38 @@ namespace SmartUni.Controllers
 			_context = context;
 			_userManager = userManager;
 		}
+		
 		public async Task<IActionResult> Index()
 		{
 			var students = await _context.Students.ToListAsync();
 			return View(students);
 		}
+		[GroupAuthorizationFilter("Student")]
+		public IActionResult Default()
+		{
+			return View("Default");
+		}
 		public IActionResult Create()
 		{
+			ViewData["TitleID"] = new SelectList(_context.TitleTypes, "Id", "Name");
+			ViewData["GenderID"] = new SelectList(_context.Genders, "Id", "Name");
+			ViewData["NationalityID"] = new SelectList(_context.NationalityTypes, "Id", "Name");
+			ViewData["CountryID"] = new SelectList(_context.CountryTypes, "Id", "Name");
+			ViewData["ReligionID"] = new SelectList(_context.ReligionTypes, "Id", "Name");
+			ViewData["MaritalStatusID"] = new SelectList(_context.MaritalStatusTypes, "Id", "Name");
+			ViewData["OccupationID"] = new SelectList(_context.OccupationTypes, "Id", "Name");
+			ViewData["RelationshipID"] = new SelectList(_context.RelationshipTypes, "Id", "Name");
+			ViewData["DisabilityID"] = new SelectList(_context.DisabilityTypes, "Id", "Name");
+			return View();
+		}
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public IActionResult Create(Student student)
+		{
+			if (ModelState.IsValid)
+			{
+
+			}
 			ViewData["TitleTypeId"] = new SelectList(_context.TitleTypes, "Id", "Name");
 			ViewData["GenderId"] = new SelectList(_context.Genders, "Id", "Name");
 			ViewData["NationalityId"] = new SelectList(_context.NationalityTypes, "Id", "Name");
@@ -35,12 +61,6 @@ namespace SmartUni.Controllers
 			ViewData["OccupationId"] = new SelectList(_context.OccupationTypes, "Id", "Name");
 			ViewData["RelationshipId"] = new SelectList(_context.RelationshipTypes, "Id", "Name");
 			ViewData["DisabilityId"] = new SelectList(_context.DisabilityTypes, "Id", "Name");
-			return View();
-		}
-		[HttpPost]
-		[ValidateAntiForgeryToken]
-		public IActionResult Create(Student student)
-		{
 			return View();
 		}
 
